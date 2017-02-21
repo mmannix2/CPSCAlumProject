@@ -5,9 +5,12 @@ cool grey: #686663
 navy blue: #002B5A
 muted blue: #5381AC
 vibrant blue: #3DB8D3
+
+Trinkle yellow: #FFF17A
 */
 
 html body {
+    /* background-color: #FFF17A; Trinkle yellow */
     background-color: #C6C6CB;
     max-width: 1200px;
     min-width: 400px;
