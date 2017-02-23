@@ -26,32 +26,40 @@ html body {
 }
 
 #banner {
-    display: block;
-    width: 100%;
     min-height: 4em;
     padding: 0em 1em;
     margin: 0em 0em .75em 0em;
 }
 
-#nav {
-    display: block;
+#banner * {
+    padding: 0 auto;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 6.5rem;
+    height: 100%;
 }
 
 #logo {
-    max-height: 8em;
-    display: inline-block;
+    width: 18%;
 }
 
-#title {
-    float: right;
-    display: inline-block;
-    vertical-align: bottom;
-    font-size: 6rem;
-    width: 75%;
+#logo img {
+    height: 100%;
+    width: 100%;
+    max-height: 8rem;
+    max-width: 8rem;
+}
+
+h1#title {
+    min-width: 50vw;
+    font-weight: 500;
+    max-height: 20vw;
 }
 
 /* Navigation Bar Stuff */
 ul.topnav {
+    display: block;
     list-style-type: none;
     margin-top: .5em;
     padding: 0;
@@ -119,6 +127,7 @@ ul {
 a, a:hover {
     color: #686663;
     font-weight: 600;
+    text-decoration: none;
 }
 
 a:hover {
@@ -130,14 +139,17 @@ a:hover {
     html body {
         margin: 1rem 1rem;
     }
+    #title {
+        font-size: 4.5rem;
+    }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 950px) {
     html body {
         margin: .5rem .5rem;
     }
     #title {
-        font-size: 4.5rem;
+        font-size: 4rem;
     }
 }
 
@@ -148,27 +160,25 @@ a:hover {
     ul.topnav li:not(:first-child) a{
         color: red;
     }
-    #logo {
-        max-width: 20%;
-        height: auto;
-    }
     #title {
-        font-size: 2.5rem;
+        font-size: 3.5rem;
     }
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 590px) {
     html body {
         margin: 0em .1rem;
     }
     ul.topnav li:not(:first-child) a{
         color: red;
     }
-    #logo {
-        max-width: 20%;
-        height: auto;
-    }
     #title {
-        font-size: 2rem;
+        font-size: 3rem;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    #title {
+        font-size: 2.5rem;
     }
 }
