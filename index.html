@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="CPSCDatabase">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,7 +28,7 @@
         </script>
     <![endif]-->
 </head>
-<body>
+<body ng-controller="controller">
     <div id="header">
         <div id="banner">
             <a id="logo" href="http://umw.edu">
@@ -45,27 +45,14 @@
         </div>
     </div><!-- end #header -->
     <div id="main">
-        <div>
-            <div>
-                <h2>Job Listings</h2>
-            </div>
+        <div ng-repeat="job in jobs">
+            <h2>{{ job.name }}</h2>
+            <h4>{{ job.companyName }}</h4>
+            <p>{{ job.description }}</p>
         </div>
-        <div>
-            <div>
-                <h4>Java Software Engineer</h4>
-            </div>
-            <div>
-                This is where the job description goes. This is limited to 600 characters so it won't get overly long.
-            </div>
-        </div>
-        <div>
-            <div>
-                <h4>Linux Systers Administrator</h4>
-            </div>
-            <div>
-                This is where the job description goes. This is limited to 600 characters so it won't get overly long.
-            </div>
-        </div>
+        <p ng-if="jobs == undefined">
+            There are no available jobs at this time. Please check back later.
+        </p>
     </div><!-- end #main -->
     <div id="footer">
         <h5>
@@ -80,5 +67,6 @@
     src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
     </script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
