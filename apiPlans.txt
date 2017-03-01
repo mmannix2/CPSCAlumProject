@@ -1,0 +1,42 @@
+The project is using a REST API.
+HTTP verbs correspond with the SQL statements to edit data in our DB.
+The create, read, update, and delete (CRUD) operations are:
+C POST -> INSERT
+R GET -> SELECT
+U PUT -> UPDATE (We are not doing updates, instead delete the create)
+D DELETE -> DELETE
+Interactions with the database will be done by calling the API as follows:
+
+<website> is the domain name of the site once it is up and running.
+
+API calls for regular users:
+    GET <website>/api/jobs
+        View all data for all jobs in the DB.
+    GET <website>/api/jobs/X
+        I want to be able to search by using the api, but that has not been
+        thought through yet.
+    POST <website>/api/jobs
+        Add a new job to the DB.
+    
+    GET <website>/api/volunteers
+        View all data for all jobs in the DB.
+    POST <website>/api/volunteers
+        Add another volunteer to the DB.
+    
+    GET <website>/api/announcements
+        View all data for all announcements in the DB.
+    
+API calls for the admin account:
+    Everything listed above, plus
+    DELETE <website>/api/jobs/X
+        Remove a job from the DB where X is the job id #.
+    
+    GET <website>/api/volunteers
+        View all data for all volunteers in the DB.
+    DELETE <website>/api/volunteers/X
+        Remove a volunteer from the DB where X is the job id #.
+    
+    POST <website>/api/announcements
+        Add a new announcement to the DB.
+    DELETE <website>/api/announcements/X
+        Remove an announcement from the DB where X is the announcement id #.
