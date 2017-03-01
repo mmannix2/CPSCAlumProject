@@ -13,5 +13,5 @@ DROP TABLE IF EXISTS volunteers;
 CREATE TABLE volunteers (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, name VARCHAR(32) NOT NULL, email VARCHAR(64) NOT NULL, description VARCHAR(600) NOT NULL);
 INSERT INTO volunteers (name, email, description) VALUES ('John Doe', 'jdoe@company.com', 'I want to teach the students about Hadoop!');
 
-#GRANT ALL ON jobs TO *username*;
-#GRANT ALL ON volunteers TO *username*;
+GRANT SELECT, INSERT ON db.jobs TO 'api'@'localhost';
+GRANT SELECT, INSERT ON db.volunteers TO 'api'@'localhost';
