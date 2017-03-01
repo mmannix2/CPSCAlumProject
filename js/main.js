@@ -1,3 +1,4 @@
+//These are for testing purposes. Eventually this data will come from the DB.
 var job1 = new Object();
 job1.name = 'Java Developer';
 job1.companyName = 'Company A';
