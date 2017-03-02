@@ -4,8 +4,10 @@ app.factory('dataFactory', ['$http',
     function($http) {
         return {
             getJobs: function () {
-                var promise = $http.get('/api/jobs.php')
-                .then(function(response) {
+                var promise = $http.get('/api/jobs')
+                .then(function (response) {
+                    console.log(response.data);
+                    console.log(response.status);
                     return response.data;
                 }, function (error) {
                     //Error
@@ -25,6 +27,8 @@ app.controller('controller', ['$scope', 'dataFactory',
         dataFactory.getJobs().then(function(data)
         {
             $scope.jobs = data;
+        }, function (error) {
+            console.log(error);
         });
     }
 ]);
