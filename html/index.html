@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>View Jobs - UMW Job Database</title>
+    <title>Browse Jobs - UMW Job Database</title>
     
     <!-- Font -->
     <link rel="stylesheet" type="text/css"
@@ -19,7 +19,7 @@
     src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js">
     </script>
     <!--Chrome Mobile Theme Color-->
-    <meta name="theme-color" content="#EFEFEF">
+    <meta name="theme-color" content="#C6C6CB">
     <!-- HTML5 shim and Respond.js for IE8 support -->
     <!--[if lt IE 9]>
         <script
@@ -47,12 +47,12 @@
     <div id="main">
         <div id="search">
             <h2>Search</h2>
-            <form>
+            <form ng-submit="search()">
                 <label> Job Title
-                    <input type="text"/>
+                    <input type="text" ng-model="searchTerms['jobTitle']"/>
                 </label>
                 <label> Company Name
-                    <input type="text"/>
+                    <input type="text" ng-model="searchTerms['companyName']"/>
                 </label>
                 <label>
                     <input type="submit"/> 

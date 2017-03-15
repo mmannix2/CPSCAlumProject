@@ -42,7 +42,11 @@ switch($_SERVER['REQUEST_METHOD'])
         if( $requestParts[2] == "jobs") {
             echo loadJobs($DB_HOST, $DB_USER, $DB_PASSWORD, $DB_NAME);
         }
-        break;   
+        if( $requestParts[2] == "search") {
+            $json = json_encode("No results found.");
+            echo $json;
+        }
+        break;
     case 'POST':
         $request = $_POST['request'];
         //echo "POST: $request";
