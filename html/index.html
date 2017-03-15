@@ -45,14 +45,31 @@
         </div>
     </div><!-- end #header -->
     <div id="main">
-        <div ng-repeat="job in jobs">
-            <h2>{{ job.name }}</h2>
-            <h4>{{ job.companyName }}</h4>
-            <p>{{ job.description }}</p>
+        <div id="search">
+            <h2>Search</h2>
+            <form>
+                <label> Job Title
+                    <input type="text"/>
+                </label>
+                <label> Company Name
+                    <input type="text"/>
+                </label>
+                <label>
+                    <input type="submit"/> 
+                </label>
+            </form>
         </div>
-        <p ng-if="jobs == undefined">
-            There are no available jobs at this time. Please check back later.
-        </p>
+        <div id="jobs">
+            <h2>Jobs</h2>
+            <div ng-repeat="job in jobs">
+                <h2>{{ job.name }}</h2>
+                <h4>{{ job.companyName }}</h4>
+                <p>{{ job.description }}</p>
+            </div>
+            <p ng-if="jobs == undefined">
+                There are no available jobs at this time. Please check back later.
+            </p>
+        </div>
     </div><!-- end #main -->
     <div id="footer">
         <h5>

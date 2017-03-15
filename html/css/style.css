@@ -96,6 +96,25 @@ ul.topnav li img {
     background-color: #FFFFFF;
 }
 
+#main div {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0px;
+}
+
+#search {
+    width: 28%;
+    margin: 0em .5em 0em 0em;
+}
+
+#search form * {
+    width: 100%;
+}
+
+#jobs {
+    width: 70%;
+}
+
 #footer {
     padding: 0em 1em;
     color: #002B5A;
