@@ -78,6 +78,7 @@ ul.topnav li a{
     text-align: center;
     padding: .5em .5em;
     text-decoration: none;
+    font-size: 1.2em;
 }
 
 ul.topnav li a:hover{
@@ -184,9 +185,6 @@ a:hover {
     html body {
         margin: 0em .25rem;
     }
-    ul.topnav li:not(:first-child) a{
-        color: red;
-    }
     #title {
         font-size: 3.5rem;
     }
@@ -195,9 +193,6 @@ a:hover {
 @media only screen and (max-width: 590px) {
     html body {
         margin: 0em .1rem;
-    }
-    ul.topnav li:not(:first-child) a{
-        color: red;
     }
     #title {
         font-size: 3rem;
