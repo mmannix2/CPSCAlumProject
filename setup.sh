@@ -6,7 +6,7 @@
 
 sudo mysql < setup/createUsers.sql
 sudo mysql < db.sql
-sudo rm /var/www/html
+sudo rm -r /var/www/html
 sudo ln -s ~/workspace/CPSCDatabase /var/www/html
 sudo cp .htaccess /var/www
 sudo cp setup/001-cloud9.conf /etc/apache2/sites-enabled/001-cloud9.conf
