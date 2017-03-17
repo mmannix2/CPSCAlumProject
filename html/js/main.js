@@ -24,7 +24,7 @@ app.controller('controller', ['$scope', 'dataFactory',
         
         $scope.jobs = undefined;
         $scope.searchTerms = [];
-        
+        $scope.logInInfo = []; 
         
         dataFactory.getJobs().then(function(data)
         {
@@ -32,8 +32,15 @@ app.controller('controller', ['$scope', 'dataFactory',
         }, function (error) {
             console.log(error);
         });
+        
+        //Currently only captures input and prints it to the console
         $scope.search = function search() {
             console.log($scope.searchTerms);
+        }
+        
+        //Currently only captures input and prints it to the console
+        $scope.logIn = function logIn() {
+            console.log($scope.logInInfo);
         }
     }
 ]);
