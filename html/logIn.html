@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Post a job - UMW Job Database</title>
+    <title>Admin Log In - UMW Job Database</title>
     
     <!-- Font -->
     <link rel="stylesheet" type="text/css"
@@ -45,21 +45,20 @@
         </div>
     </div><!-- end #header -->
     <div id="main">
-        <h1>Post a job</h1>
-        <form>
-            <p>Job Title:</p>
-            <input type="text" name="jobtitle"><br>
-            <p>Location:</p>
-            <input type="text" name="location"><br>
-            <p>Contact info:</p>
-            <input type="text" name="contactinfo"><br>
-            <p>Description</p>
-            <textarea name="jobdescription" rows="10" cols="60"></textarea>
-        </form>
-        
-
-        
-        
+        <div id="logIn">
+            <h2>Log In</h2>
+            <form ng-submit="logIn()">
+                <label> Username
+                    <input type="text" ng-model="logInInfo['username']"/>
+                </label>
+                <label> Password
+                    <input type="text" ng-model="logInInfo['password']"/>
+                </label>
+                <label>
+                    <input type="submit"/> 
+                </label>
+            </form>
+        </div>
     </div><!-- end #main -->
     <div id="footer">
         <h5>
