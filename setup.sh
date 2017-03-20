@@ -5,10 +5,10 @@
 #Once you do that make this script executable and run it.
 
 sudo service mysql start
-#sudo mysql < setup/createUsers.sql
-sudo mysql < db.sql
+sudo mysql -u root < /home/ubuntu/workspace/CPSCDatabase/setup/createUsers.sql
+sudo mysql -u root < /home/ubuntu/workspace/CPSCDatabase/db.sql
 sudo rm -r /var/www/html
-sudo ln -s ~/workspace/CPSCDatabase/html /var/www/html
-sudo cp .htaccess /var/www
-sudo cp setup/001-cloud9.conf /etc/apache2/sites-enabled/001-cloud9.conf
-sudo cp setup/apache2.conf /etc/apache2
+sudo ln -s /home/ubuntu/workspace/CPSCDatabase/html /var/www/html
+sudo cp /home/ubuntu/workspace/CPSCDatabase/.htaccess /var/www
+sudo cp /home/ubuntu/workspace/CPSCDatabase/setup/001-cloud9.conf /etc/apache2/sites-enabled/001-cloud9.conf
+sudo cp /home/ubuntu/workspace/CPSCDatabase/setup/apache2.conf /etc/apache2

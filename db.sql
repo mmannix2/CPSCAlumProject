@@ -17,5 +17,5 @@ INSERT INTO volunteers (name, email, description) VALUES ('John Doe', 'jdoe@comp
 GRANT SELECT, INSERT ON db.jobs TO 'api'@'localhost';
 GRANT SELECT, INSERT ON db.volunteers TO 'api'@'localhost';
 
-#GRANT ALL ON db.jobs TO 'admin'@'localhost';
-#GRANT ALL ON db.volunteers TO 'admin'@'localhost';
+GRANT ALL ON db.jobs TO 'admin'@'localhost';
+GRANT ALL ON db.volunteers TO 'admin'@'localhost';
