@@ -11,11 +11,11 @@ app.factory('dataFactory', ['$http',
                     return response.data;
                 }, function (error) {
                     //Error
-                    console.log("Error getting all jobs.")
-                })
+                    console.log("Error getting all jobs.");
+                });
             return promise;
             }
-        }
+        };
     }
 ]);
 
@@ -36,7 +36,7 @@ app.controller('controller', ['$scope', 'dataFactory',
         //Currently only captures input and prints it to the console
         $scope.search = function search() {
             console.log($scope.searchTerms);
-        }
+        };
         
         //Currently only captures input and prints it to the console
         $scope.logIn = function logIn() {
