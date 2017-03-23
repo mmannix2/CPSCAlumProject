@@ -47,7 +47,7 @@
     <div id="main">
         <div id="volunteer">
             <h2>Volunteer!</h2>
-            <form>
+            <form ng-submit="postVolunteer()">
                 <label>
                     Name:
                     <input type="text" name="name">
@@ -65,7 +65,7 @@
                 <br>
                 <label>
                     About me
-                    <textarea name="About me" rows="10" cols="60"></textarea>
+                    <textarea name="aboutMe" maxlength="600" ng-model="volunteerInfo['aboutMe']"></textarea>
                 </label>
                 <br>
                 <label>

@@ -14,6 +14,18 @@ app.factory('dataFactory', ['$http',
                     console.log("Error getting all jobs.");
                 });
             return promise;
+            },
+            getVolunteers: function () {
+                var promise = $http.get('/api/volunteers')
+                .then(function (response) {
+                    console.log(response.data);
+                    console.log(response.status);
+                    return response.data;
+                }, function (error) {
+                    //Error
+                    console.log("Error getting all volunteers.");
+                });
+            return promise;
             }
         };
     }
@@ -25,7 +37,8 @@ app.controller('controller', ['$scope', 'dataFactory',
         $scope.jobs = undefined;
         $scope.searchTerms = []; //Contains the data from the search jobs form
         $scope.logInInfo = []; //Contains the data from the log in form
-        $scope.postInfo = []; //Contains data from the post a job form
+        $scope.postInfo = []; //Contains the data from the post a job form
+        $scope.volunteerInfo = []; //Contains the data from a volunteer
         
         dataFactory.getJobs().then(function(data)
         {
@@ -42,6 +55,11 @@ app.controller('controller', ['$scope', 'dataFactory',
         //Currently only captures input and prints it to the console
         $scope.searchJobs = function searchJobs() {
             console.log($scope.searchTerms);
+        };
+        
+        //Currently only captures input and prints it to the console
+        $scope.postVolunteer = function postVolunteer() {
+            console.log($scope.volunteerInfo);
         };
         
         //Currently only captures input and prints it to the console
