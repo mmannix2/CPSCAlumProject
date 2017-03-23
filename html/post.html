@@ -45,25 +45,24 @@
         </div>
     </div><!-- end #header -->
     <div id="main">
-        <h1>Post a job</h1>
-        <form ng-submit="postJob()">
-            <p>Job Title:</p>
-            <input type="text" name="jobTitle" ng-model="postInfo['jobTitle']"><br>
-            <p>Company Name:</p>
-            <input type="text" name="companyName" ng-model="postInfo['companyName']"><br>
-            <p>Location:</p>
-            <input type="text" name="location" ng-model="postInfo['location']"><br>
-            <p>Location:</p>
-            <input type="text" name="link" ng-model="postInfo['link']"><br>
-            <p>Contact info:</p>
-            <input type="text" name="email" ng-model="postInfo['email']"><br>
-            <p>Description</p>
-            <textarea name="description" rows="10" cols="60" ng-model="postInfo['description']"></textarea><br>
-            <input type="submit" value="Submit">
-        </form> 
-        
-
-        
+        <div id=post>
+            <h2>Post a job</h2>
+            <form ng-submit="postJob()">
+                <p>Job Title:</p>
+                <input type="text" name="jobTitle" ng-model="postInfo['jobTitle']"><br>
+                <p>Company Name:</p>
+                <input type="text" name="companyName" ng-model="postInfo['companyName']"><br>
+                <p>Location:</p>
+                <input type="text" name="location" ng-model="postInfo['location']"><br>
+                <p>Contact info:</p>
+                <input type="text" name="email" ng-model="postInfo['email']"><br>
+                <p>External Link:</p>
+                <input type="text" name="link" ng-model="postInfo['link']"><br>
+                <p>Description</p>
+                <textarea name="description" maxlength="600" ng-model="postInfo['description']"></textarea><br>
+                <input type="submit" value="Submit" ng-disabled="!postInfo['email'] && !postInfo['link']">
+            </form> 
+        </div>
         
     </div><!-- end #main -->
     <div id="footer">

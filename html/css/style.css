@@ -104,6 +104,13 @@ ul.topnav li img {
     padding: 0px;
 }
 
+#footer {
+    padding: 0em 1em;
+    color: #002B5A;
+    text-align: right;
+}
+
+/* index.html */
 #search {
     width: 25%;
     margin: 0em .5em 0em 0em;
@@ -121,11 +128,20 @@ ul.topnav li img {
     display: block;
 }
 
-#footer {
-    padding: 0em 1em;
-    color: #002B5A;
-    text-align: right;
+/* post.html */
+#post {
+    width: 100%;
+    margin: 0em .5em 0em 0em;
 }
+
+#post form * {
+    width: 100%;
+}
+
+#post form textarea {
+    min-height: 10em;
+}
+
 
 h1, h2, h3, h4, h5, h6 {
     /*text-transform: uppercase;
