@@ -28,10 +28,26 @@ function loadJobs() {
 
 function postJob($postInfo) {
     //TO DO INSERT this new job into the db
+    //Get data from POST
 }
 
-function searchJobs() {
-    //TO DO Write this
+function searchJobs($query) {
+    //TO DO Write specific SELECT statements to search
+}
+
+function loadVolunteers() {
+    try {
+        //Connect to DB
+        $db = connectToDB();
+        
+        //Get Result
+        $results = $db->query('SELECT * FROM volunteers')->fetchAll(PDO::FETCH_ASSOC);
+        $json = json_encode($results);
+        return $json;
+    }
+    catch(PDOException $e) {
+        return "<script>console.log(Connection Failed: $e</script>";
+    }
 }
 
 //Get the request

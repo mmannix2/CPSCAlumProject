@@ -23,8 +23,9 @@ app.controller('controller', ['$scope', 'dataFactory',
     function getJobs($scope, dataFactory) {
         
         $scope.jobs = undefined;
-        $scope.searchTerms = [];
-        $scope.logInInfo = []; 
+        $scope.searchTerms = []; //Contains the data from the search jobs form
+        $scope.logInInfo = []; //Contains the data from the log in form
+        $scope.postInfo = []; //Contains data from the post a job form
         
         dataFactory.getJobs().then(function(data)
         {
@@ -34,7 +35,12 @@ app.controller('controller', ['$scope', 'dataFactory',
         });
         
         //Currently only captures input and prints it to the console
-        $scope.search = function search() {
+        $scope.postJob = function postJob() {
+            console.log($scope.postInfo);
+        };
+        
+        //Currently only captures input and prints it to the console
+        $scope.searchJobs = function searchJobs() {
             console.log($scope.searchTerms);
         };
         

@@ -46,17 +46,21 @@
     </div><!-- end #header -->
     <div id="main">
         <h1>Post a job</h1>
-        <form>
+        <form ng-submit="postJob()">
             <p>Job Title:</p>
-            <input type="text" name="jobtitle"><br>
+            <input type="text" name="jobTitle" ng-model="postInfo['jobTitle']"><br>
+            <p>Company Name:</p>
+            <input type="text" name="companyName" ng-model="postInfo['companyName']"><br>
             <p>Location:</p>
-            <input type="text" name="location"><br>
+            <input type="text" name="location" ng-model="postInfo['location']"><br>
+            <p>Location:</p>
+            <input type="text" name="link" ng-model="postInfo['link']"><br>
             <p>Contact info:</p>
-            <input type="text" name="contactinfo"><br>
+            <input type="text" name="email" ng-model="postInfo['email']"><br>
             <p>Description</p>
-            <textarea name="jobdescription" rows="10" cols="60"></textarea><br>
+            <textarea name="description" rows="10" cols="60" ng-model="postInfo['description']"></textarea><br>
             <input type="submit" value="Submit">
-        </form>
+        </form> 
         
 
         
