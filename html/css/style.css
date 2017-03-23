@@ -110,6 +110,10 @@ ul.topnav li img {
     text-align: right;
 }
 
+input[type="submit"] {
+    color: #002B5A;
+}
+
 /* index.html */
 #search {
     width: 25%;
@@ -131,7 +135,6 @@ ul.topnav li img {
 /* post.html */
 #post {
     width: 100%;
-    margin: 0em .5em 0em 0em;
 }
 
 #post form * {
@@ -142,6 +145,27 @@ ul.topnav li img {
     min-height: 10em;
 }
 
+/* volunteer.html */
+#volunteer {
+    width: 100%;
+}
+
+#volunteer form * {
+    width: 100%;
+}
+
+#volunteer form textarea {
+    min-height: 10em;
+}
+
+/* login.html */
+#logIn {
+    width: 100%;
+}
+
+#logIn form *{
+    width: 100%;
+}
 
 h1, h2, h3, h4, h5, h6 {
     /*text-transform: uppercase;

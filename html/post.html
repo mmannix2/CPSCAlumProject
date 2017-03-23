@@ -48,19 +48,39 @@
         <div id=post>
             <h2>Post a job</h2>
             <form ng-submit="postJob()">
-                <p>Job Title:</p>
-                <input type="text" name="jobTitle" ng-model="postInfo['jobTitle']"><br>
-                <p>Company Name:</p>
-                <input type="text" name="companyName" ng-model="postInfo['companyName']"><br>
-                <p>Location:</p>
-                <input type="text" name="location" ng-model="postInfo['location']"><br>
-                <p>Contact info:</p>
-                <input type="text" name="email" ng-model="postInfo['email']"><br>
-                <p>External Link:</p>
-                <input type="text" name="link" ng-model="postInfo['link']"><br>
-                <p>Description</p>
-                <textarea name="description" maxlength="600" ng-model="postInfo['description']"></textarea><br>
-                <input type="submit" value="Submit" ng-disabled="!postInfo['email'] && !postInfo['link']">
+                <label>
+                    Job Title:
+                    <input type="text" name="jobTitle" ng-model="postInfo['jobTitle']">
+                </label>
+                <br>
+                <label>
+                    Company Name:
+                    <input type="text" name="companyName" ng-model="postInfo['companyName']">
+                </label>
+                <br>
+                <label>
+                    Location:
+                    <input type="text" name="location" ng-model="postInfo['location']">
+                </label>
+                <br>
+                <label>
+                    Contact info:
+                    <input type="text" name="email" ng-model="postInfo['email']">
+                </label>
+                <br>
+                <label>
+                    External Link:
+                    <input type="text" name="link" ng-model="postInfo['link']">
+                </label>
+                <br>
+                <label>
+                    Description
+                    <textarea name="description" maxlength="600" ng-model="postInfo['description']"></textarea>
+                </label>
+                <br>
+                <label>
+                    <input type="submit" ng-disabled="!postInfo['email'] && !postInfo['link']">
+                </label>
             </form> 
         </div>
         
