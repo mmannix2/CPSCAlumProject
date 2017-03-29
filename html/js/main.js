@@ -7,7 +7,6 @@ app.factory('dataFactory', ['$http',
                 var promise = $http.get('/api/jobs')
                 .then(function (response) {
                     console.log(response.data);
-                    console.log(response.status);
                     return response.data;
                 }, function (error) {
                     //Error
@@ -31,7 +30,7 @@ app.factory('dataFactory', ['$http',
     }
 ]);
 
-app.controller('controller', ['$scope', 'dataFactory',
+app.controller('controller', ['$scope', 'dataFactory' ,
     function getJobs($scope, dataFactory) {
         
         $scope.jobs = undefined;
@@ -48,8 +47,16 @@ app.controller('controller', ['$scope', 'dataFactory',
         });
         
         //Currently only captures input and prints it to the console
-        $scope.postJob = function postJob() {
+        $scope.postJob = function postJob($http) {
             console.log($scope.postInfo);
+            $http.post('post.php', {name: 'Matt'}).then(
+                function() {
+                    console.log("Successfully POSTed.");
+                },
+                function() {
+                    console.log("POSTing failed.");
+                }
+            );
         };
         
         //Currently only captures input and prints it to the console
@@ -65,6 +72,6 @@ app.controller('controller', ['$scope', 'dataFactory',
         //Currently only captures input and prints it to the console
         $scope.logIn = function logIn() {
             console.log($scope.logInInfo);
-        }
+        };
     }
 ]);
