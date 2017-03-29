@@ -45,21 +45,36 @@ app.controller('controller', ['$scope', 'dataFactory' ,
     function getJobs($scope, dataFactory) {
         
         $scope.jobs = undefined;
-        $scope.searchTerms = []; //Contains the data from the search jobs form
-        $scope.logInInfo = []; //Contains the data from the log in form
+        
+        //Contains the data from the search jobs form
+        $scope.searchTerms = {
+            "jobTitle": undefined,
+            "companyName": undefined,
+            "keywords": undefined,
+            "location": undefined,
+            "distance": undefined
+        }; 
+        
+        //Contains the data from the log in form
+        $scope.logInInfo = {
+            "username": undefined,
+            "password": undefined
+        }; 
         
         //Contains the data from the post a job form
         $scope.postJobInfo = {
-            "jobTitle" : "",
-            "companyName": "",
-            "description": "",
+            "jobTitle": undefined,
+            "companyName": undefined,
+            "description": undefined,
             "location": undefined,
-            "email": "",
-            "link": ""
-        }; 
+            "email": undefined,
+            "link": undefined
+        };
+        
         $scope.postJobStatus = "Job not yet submitted.";
         
-        $scope.postVolunteerInfo = []; //Contains the data from a volunteer
+        //Contains the data from a volunteer
+        $scope.postVolunteerInfo = []; 
         
         dataFactory.getJobs().then(function (data) {
             $scope.jobs = data;
@@ -75,7 +90,7 @@ app.controller('controller', ['$scope', 'dataFactory' ,
             /* TODO Find a way to notify the user that the form was submitted successfully.
             if(success == true ) {
                 $scope.postJobStatus = "Job posted successfully!";
-                $scope.apply();
+                $scope.$apply();
             }
             */
         };
