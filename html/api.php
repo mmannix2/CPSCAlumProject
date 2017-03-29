@@ -15,22 +15,21 @@ function connectToDB() {
 }
  
 /* Jobs */
-function loadJobs() {
+function getJobs() {
     try {
         //Connect to DB
         $db = connectToDB();
         
         //Get Result
-        $results = $db->query('SELECT name, companyName, location, description FROM jobs')->fetchAll(PDO::FETCH_ASSOC);
-        $json = json_encode($results);
-        return $json;
+        $results = $db->query('SELECT jobTitle, companyName, location, description FROM jobs')->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($results);
     }
     catch(PDOException $e) {
-        return "<script>console.log(Connection Failed: $e</script>";
+        return json_encode(array("error" => "Failed to load jobs."));
     }
 }
 
-function postJob($postInfo) {
+function postJob($postJobInfo) {
     try {
         //Connect to DB
         $db = connectToDB();
@@ -38,34 +37,34 @@ function postJob($postInfo) {
         $query1 = "INSERT INTO jobs (jobTitle, companyName, description, location";
         $query2 = ") VALUES (:jobTitle, :companyName, :description, :location";
         
-        if(array_key_exists("email", $postInfo)) {
+        if(array_key_exists("email", $postJobInfo)) {
             $query1 .= ", email";
             $query2 .= ", :email";
         }
-        if(array_key_exists("link", $postInfo)) {
+        if(array_key_exists("link", $postJobInfo)) {
             $query1 .= ", link";
             $query2 .= ", :link";
         }
         
         $query = $query1 . $query2 . ")";
         
-        //echo $query;
+        echo $query;
          
         //Insert this job into the DB
         $stmt = $db->prepare($query);
         
         //if(array_key_exists)
         
-        $stmt->bindParam(':jobTitle', $postInfo[jobTitle]);
-        $stmt->bindParam(':companyName', $postInfo[companyName]);
-        $stmt->bindParam(':description', $postInfo[description]);
-        $stmt->bindParam(':location', $postInfo[location]);
+        $stmt->bindParam(':jobTitle', $postJobInfo[jobTitle]);
+        $stmt->bindParam(':companyName', $postJobInfo[companyName]);
+        $stmt->bindParam(':description', $postJobInfo[description]);
+        $stmt->bindParam(':location', $postJobInfo[location]);
         
-        if(array_key_exists("email", $postInfo)) {
-            $stmt->bindParam(':email', $postInfo[email]);
+        if(array_key_exists("email", $postJobInfo)) {
+            $stmt->bindParam(':email', $postJobInfo[email]);
         }
-        if(array_key_exists("link", $postInfo)) {
-            $stmt->bindParam(':link', $postInfo[link]);
+        if(array_key_exists("link", $postJobInfo)) {
+            $stmt->bindParam(':link', $postJobInfo[link]);
         }
         
         $stmt->execute();
@@ -73,27 +72,27 @@ function postJob($postInfo) {
         $newId = $db->lastInsertId();
         //$stmt->close();
         
-        return json_encode('"status":"success"');
+        return json_encode(array("success" => true));
     }
     catch(PDOException $e) {
-        echo $e;
-        return json_encode('"error":"Failed to post job."');
+        return json_encode(array("error" => "Failed to post jobs.", "e" => $e));
     }
 }
 
 function searchJobs($searchTerms) {
+    try {
+    //Connect to DB
+    $db = connectToDB();
+    /*
     $standardQuery = "SELECT name, companyName, location, description FROM jobs";
     $whereClause = " Where";
-    try {
         $out = "";
         
-        //Connect to DB
-        $db = connectToDB();
         
         foreach($searchTerms as $key => $value) {
             $out .= "$key:$value/";
         }
-        
+    */    
         //Job Search Criteria
         /*
         For each key in $searchKeys:
@@ -107,34 +106,34 @@ function searchJobs($searchTerms) {
         //foreach()
         
         //Get Search Results
-        $results = $db->query('SELECT name, companyName, location, description FROM jobs')->fetchAll(PDO::FETCH_ASSOC);
+        //$results = $db->query('SELECT name, companyName, location, description FROM jobs')->fetchAll(PDO::FETCH_ASSOC);
         //return json_encode($results);
         
-        return $out;
+        //return $out;
+        return json_encode(array("status" => "code incomplete!"));
     }
     catch(PDOException $e) {
-        return "<script>console.log(Connection Failed: $e</script>";
+        return json_encode(array("error" => "Failed to search jobs."));
     }
 }
 
 /* Volunteers */
-function postVolunteer($postInfo) {
+function postVolunteer($postVolunteerInfo) {
     //TO DO INSERT this new volunteer into the db
     //Get data from POST
 }
 
-function loadVolunteers() {
+function getVolunteers() {
     try {
         //Connect to DB
         $db = connectToDB();
         
         //Get Result
-        $results = $db->query('SELECT * FROM volunteers')->fetchAll(PDO::FETCH_ASSOC);
-        $json = json_encode($results);
-        return $json;
+        $results = $db->query('SELECT name, email, description FROM volunteers')->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($results);
     }
     catch(PDOException $e) {
-        return "<script>console.log(Connection Failed: $e</script>";
+        return json_encode(array("error" => "Failed to load volunteers."));
     }
 }
 
@@ -142,18 +141,32 @@ function loadVolunteers() {
 $requestURI = $_SERVER['REQUEST_URI'];
 $requestParts = explode('/', rtrim($requestURI, '/'));
 
-//Test Variables
-$testSearchTerms = array("jobTitle" => "programmer", "companyName" => "TechCorp", "location" => "20169");
+/* Test Cases
+//searchJobs
+$searchJobs1 = array("jobTitle" => "programmer", "companyName" => "TechCorp", "location" => "20169");
+
+//postJob
+$postJob1 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345);
+$postJob2 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "email" => "boss@TechCorp.com");
+$postJob3 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "link" => "TechCorp.com/jobs/12345/1");
+$postJob4 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "email" => "boss@TechCorp.com", "link" => "TechCorp.com/jobs/12345/1");
+*/
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        //api/jobs
-        if( $requestParts[2] == "jobs") {
-            echo loadJobs();
-        }
-        //api/jobs/search
-        if( $requestParts[2] == "search") {
-            echo searchJobs($testSearchTerms);
+        switch($requestParts[2]) {
+            //api/jobs
+            case 'jobs':
+                echo getJobs();
+            break;
+            //api/search
+            case 'search':
+                echo searchJobs($testSearchTerms);
+            break;
+            //api/volunteers 
+            case 'volunteers':
+                echo getVolunteers();
+            break;
         }
         break;
     case 'POST':
@@ -161,22 +174,16 @@ switch($_SERVER['REQUEST_METHOD']) {
         switch($requestParts[2]) {
             //api/jobs
             case 'jobs':
-                /* Test Cases
-                $postInfo1 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345);
-                $postInfo2 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "email" => "boss@TechCorp.com");
-                $postInfo3 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "link" => "TechCorp.com/jobs/12345/1");
-                $postInfo4 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "email" => "boss@TechCorp.com", "link" => "TechCorp.com/jobs/12345/1");
-                */
                 echo postJob($data);
             break;
             case 'volunteers':
-                echo postVolunteer();
+                echo postVolunteer($data);
             break;
         }
         echo var_dump($data);
         break;
     default:
-        //echo "OTHER: $request";
+        echo json_encode(array("error" => "Unsupported method used."));
         break;
 }
 

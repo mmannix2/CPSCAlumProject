@@ -47,39 +47,39 @@
     <div id="main">
         <div id=post>
             <h2>Post a job</h2>
-            <form ng-submit="postJob()">
+            <form ng-submit="postJobClicked()">
                 <label>
                     Job Title:
-                    <input type="text" name="jobTitle" ng-model="postInfo['jobTitle']">
+                    <input type="text" name="jobTitle" ng-model="postJobInfo['jobTitle']">
                 </label>
                 <br>
                 <label>
                     Company Name:
-                    <input type="text" name="companyName" ng-model="postInfo['companyName']">
+                    <input type="text" name="companyName" ng-model="postJobInfo['companyName']">
                 </label>
                 <br>
                 <label>
                     Location:
-                    <input type="text" name="location" ng-model="postInfo['location']">
+                    <input type="text" name="location" ng-model="postJobInfo['location']">
                 </label>
                 <br>
                 <label>
                     Contact info:
-                    <input type="text" name="email" ng-model="postInfo['email']">
+                    <input type="text" name="email" ng-model="postJobInfo['email']">
                 </label>
                 <br>
                 <label>
                     External Link:
-                    <input type="text" name="link" ng-model="postInfo['link']">
+                    <input type="text" name="link" ng-model="postJobInfo['link']">
                 </label>
                 <br>
                 <label>
                     Description
-                    <textarea name="description" maxlength="600" ng-model="postInfo['description']"></textarea>
+                    <textarea name="description" maxlength="600" ng-model="postJobInfo['description']"></textarea>
                 </label>
                 <br>
                 <label>
-                    <input type="submit" ng-disabled="!postInfo['email'] && !postInfo['link']">
+                    <input type="submit" ng-disabled="!postJobInfo['email'] && !postJobInfo['link']">
                 </label>
             </form> 
         </div>

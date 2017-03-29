@@ -8,21 +8,41 @@ app.factory('dataFactory', ['$http',
                 .then(function (response) {
                     console.log(response.data);
                     return response.data;
-                }, function (error) {
+                }, function (response) {
                     //Error
-                    console.log("Error getting all jobs.");
+                    console.log(response.error);
                 });
             return promise;
+            },
+            postJob: function (postJobInfo) {
+            /*
+            var promise = $http.post('/api/jobs', {
+                    "jobTitle": postJobInfo.jobTitle,
+                    "companyName": postJobInfo.companyName,
+                    "description": postJobInfo.description,
+                    "location" : postJobInfo.location
+                    
+                }) 
+            */
+                var promise = $http.post('/api/jobs', postJobInfo) 
+                .then(function (response){
+                    console.log(response.data);
+                    return response.data;
+                }, function (response){
+                    //Error
+                    console.log(response.error);
+                    console.log(response.e);
+                });
+                return promise;
             },
             getVolunteers: function () {
                 var promise = $http.get('/api/volunteers')
                 .then(function (response) {
                     console.log(response.data);
-                    console.log(response.status);
                     return response.data;
-                }, function (error) {
+                }, function (response) {
                     //Error
-                    console.log("Error getting all volunteers.");
+                    console.log(response.error);
                 });
             return promise;
             }
@@ -36,27 +56,27 @@ app.controller('controller', ['$scope', 'dataFactory' ,
         $scope.jobs = undefined;
         $scope.searchTerms = []; //Contains the data from the search jobs form
         $scope.logInInfo = []; //Contains the data from the log in form
-        $scope.postInfo = []; //Contains the data from the post a job form
-        $scope.volunteerInfo = []; //Contains the data from a volunteer
+        $scope.postJobInfo = {
+            "jobTitle" : "",
+            "companyName": "",
+            "description": "",
+            "location": 00000,
+            "email": "",
+            "link": ""
+        }; //Contains the data from the post a job form
+        $scope.postVolunteerInfo = []; //Contains the data from a volunteer
         
-        dataFactory.getJobs().then(function(data)
-        {
+        dataFactory.getJobs().then(function (data) {
             $scope.jobs = data;
         }, function (error) {
             console.log(error);
         });
         
         //Currently only captures input and prints it to the console
-        $scope.postJob = function postJob($http) {
-            console.log($scope.postInfo);
-            $http.post('post.php', {name: 'Matt'}).then(
-                function() {
-                    console.log("Successfully POSTed.");
-                },
-                function() {
-                    console.log("POSTing failed.");
-                }
-            );
+        $scope.postJobClicked = function postJobClicked() {
+            console.log("Trying to post a job.");
+            console.log($scope.postJobInfo);
+            dataFactory.postJob($scope.postJobInfo);
         };
         
         //Currently only captures input and prints it to the console
@@ -66,7 +86,7 @@ app.controller('controller', ['$scope', 'dataFactory' ,
         
         //Currently only captures input and prints it to the console
         $scope.postVolunteer = function postVolunteer() {
-            console.log($scope.volunteerInfo);
+            console.log($scope.postVolunteerInfo);
         };
         
         //Currently only captures input and prints it to the console
