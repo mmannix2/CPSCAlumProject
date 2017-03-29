@@ -15,15 +15,6 @@ app.factory('dataFactory', ['$http',
             return promise;
             },
             postJob: function (postJobInfo) {
-            /*
-            var promise = $http.post('/api/jobs', {
-                    "jobTitle": postJobInfo.jobTitle,
-                    "companyName": postJobInfo.companyName,
-                    "description": postJobInfo.description,
-                    "location" : postJobInfo.location
-                    
-                }) 
-            */
                 var promise = $http.post('/api/jobs', postJobInfo) 
                 .then(function (response){
                     console.log(response.data);
@@ -31,7 +22,7 @@ app.factory('dataFactory', ['$http',
                 }, function (response){
                     //Error
                     console.log(response.error);
-                    console.log(response.e);
+                    console.log(response.message);
                 });
                 return promise;
             },
@@ -56,14 +47,18 @@ app.controller('controller', ['$scope', 'dataFactory' ,
         $scope.jobs = undefined;
         $scope.searchTerms = []; //Contains the data from the search jobs form
         $scope.logInInfo = []; //Contains the data from the log in form
+        
+        //Contains the data from the post a job form
         $scope.postJobInfo = {
             "jobTitle" : "",
             "companyName": "",
             "description": "",
-            "location": 00000,
+            "location": undefined,
             "email": "",
             "link": ""
-        }; //Contains the data from the post a job form
+        }; 
+        $scope.postJobStatus = "Job not yet submitted.";
+        
         $scope.postVolunteerInfo = []; //Contains the data from a volunteer
         
         dataFactory.getJobs().then(function (data) {
@@ -76,7 +71,13 @@ app.controller('controller', ['$scope', 'dataFactory' ,
         $scope.postJobClicked = function postJobClicked() {
             console.log("Trying to post a job.");
             console.log($scope.postJobInfo);
-            dataFactory.postJob($scope.postJobInfo);
+            dataFactory.postJob($scope.postJobInfo)
+            /* TODO Find a way to notify the user that the form was submitted successfully.
+            if(success == true ) {
+                $scope.postJobStatus = "Job posted successfully!";
+                $scope.apply();
+            }
+            */
         };
         
         //Currently only captures input and prints it to the console

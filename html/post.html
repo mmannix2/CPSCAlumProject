@@ -79,11 +79,13 @@
                 </label>
                 <br>
                 <label>
-                    <input type="submit" ng-disabled="!postJobInfo['email'] && !postJobInfo['link']">
+                    <input type="submit" ng-disabled="(!postJobInfo['jobTitle'] || !postJobInfo['companyName'] || !postJobInfo['description'] || !postJobInfo['location']) || (!postJobInfo['email'] && !postJobInfo['link'])">
                 </label>
             </form> 
         </div>
-        
+        <div>
+            {{postJobStatus}}
+        </div> 
     </div><!-- end #main -->
     <div id="footer">
         <h5>

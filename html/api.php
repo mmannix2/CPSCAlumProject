@@ -37,18 +37,18 @@ function postJob($postJobInfo) {
         $query1 = "INSERT INTO jobs (jobTitle, companyName, description, location";
         $query2 = ") VALUES (:jobTitle, :companyName, :description, :location";
         
-        if(array_key_exists("email", $postJobInfo)) {
+        if(!empty($postJobInfo[email])) {
             $query1 .= ", email";
             $query2 .= ", :email";
         }
-        if(array_key_exists("link", $postJobInfo)) {
+        if(!empty($postJobInfo[link])) {
             $query1 .= ", link";
             $query2 .= ", :link";
         }
         
         $query = $query1 . $query2 . ")";
         
-        echo $query;
+        //echo $query;
          
         //Insert this job into the DB
         $stmt = $db->prepare($query);
@@ -60,10 +60,10 @@ function postJob($postJobInfo) {
         $stmt->bindParam(':description', $postJobInfo[description]);
         $stmt->bindParam(':location', $postJobInfo[location]);
         
-        if(array_key_exists("email", $postJobInfo)) {
+        if(!empty($postJobInfo[email])) {
             $stmt->bindParam(':email', $postJobInfo[email]);
         }
-        if(array_key_exists("link", $postJobInfo)) {
+        if(!empty($postJobInfo[link])) {
             $stmt->bindParam(':link', $postJobInfo[link]);
         }
         
@@ -75,7 +75,7 @@ function postJob($postJobInfo) {
         return json_encode(array("success" => true));
     }
     catch(PDOException $e) {
-        return json_encode(array("error" => "Failed to post jobs.", "e" => $e));
+        return json_encode(array("error" => "Failed to post jobs.", "message" => $e.message));
     }
 }
 
@@ -180,7 +180,7 @@ switch($_SERVER['REQUEST_METHOD']) {
                 echo postVolunteer($data);
             break;
         }
-        echo var_dump($data);
+        //echo var_dump($data);
         break;
     default:
         echo json_encode(array("error" => "Unsupported method used."));
