@@ -16,3 +16,7 @@ Any commands are given inside single quotes (e.g. 'cd CPSCDatabase').
 
 5 Run setup.sh with './setup.sh'
   This will configure the some Apache config files and set up the database
+
+6 Click 'Run Project' at the top of the workspace
+
+7 Click 'Open' on the link given at the bottom of the workspace in the terminal. The homepage of the website should then appear in a new tab.
