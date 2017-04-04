@@ -47,25 +47,25 @@
     <div id="main">
         <div id="volunteer">
             <h2>Volunteer!</h2>
-            <form ng-submit="postVolunteer()">
+            <form ng-submit="postVolunteerClicked()">
                 <label>
                     Name:
-                    <input type="text" name="name">
+                    <input type="text" ng-model="postVolunteerInfo['name']">
                 </label>
                 <br>
                 <label>
                     Location:
-                    <input type="text" name="location">
+                    <input type="text" maxlength=5 ng-model="postVolunteerInfo['location']">
                 </label>
                 <br>
                 <label>
                     Contact info:
-                    <input type="text" name="contactinfo">
+                    <input type="text" ng-model="postVolunteerInfo['email']">
                 </label>
                 <br>
                 <label>
                     About me
-                    <textarea name="aboutMe" maxlength="600" ng-model="volunteerInfo['aboutMe']"></textarea>
+                    <textarea name="aboutMe" maxlength="600" ng-model="postVolunteerInfo['description']"></textarea>
                 </label>
                 <br>
                 <label>
