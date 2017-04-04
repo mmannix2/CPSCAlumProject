@@ -75,7 +75,7 @@ function postJob($postJobInfo) {
         return json_encode(array("success" => true));
     }
     catch(PDOException $e) {
-        return json_encode(array("error" => "Failed to post jobs.", "message" => $e.message));
+        return json_encode(array("error" => "Failed to post job.", "message" => $e.message));
     }
 }
 
@@ -118,11 +118,6 @@ function searchJobs($searchTerms) {
 }
 
 /* Volunteers */
-function postVolunteer($postVolunteerInfo) {
-    //TO DO INSERT this new volunteer into the db
-    //Get data from POST
-}
-
 function getVolunteers() {
     try {
         //Connect to DB
@@ -134,6 +129,30 @@ function getVolunteers() {
     }
     catch(PDOException $e) {
         return json_encode(array("error" => "Failed to load volunteers."));
+    }
+}
+
+function postVolunteer($postVolunteerInfo) {
+    try {
+        //Connect to DB
+        $db = connectToDB();
+        $query = "INSERT INTO volunteers (name, email, description) VALUES (:name, :email, :description)";
+        
+        //Insert this job into the DB
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':name', $postVolunteerInfo[name]);
+        $stmt->bindParam(':email', $postVolunteerInfo[email]);
+        $stmt->bindParam(':description', $postVolunteerInfo[description]);
+        $stmt->execute();
+        
+        echo $query;
+        
+        $newId = $db->lastInsertId();
+        
+        return json_encode(array("success" => true));
+    }
+    catch(PDOException $e) {
+        return json_encode(array("error" => "Failed to post volunteer.", "message" => $e.message));
     }
 }
 
