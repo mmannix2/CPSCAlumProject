@@ -11,16 +11,23 @@ $ADMIN_KEY = NULL;
 
 $searchKeys = array("jobTitle", "companyName", "location");
 
-function connectToDB() {
+function connectToDB($user) {
     $options = array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION );
-    return new PDO("mysql:host=127.0.0.1;dbname=db", "api", "password", $options);
+    switch($user) {
+        case 'api':
+            return new PDO("mysql:host=127.0.0.1;dbname=db", "api", "password", $options);
+        break;
+        case 'admin':
+            return new PDO("mysql:host=127.0.0.1;dbname=db", "admin", "", $options); //For whatever reason, admin doesn't like to use a password
+        break;
+    }
 }
  
 /* Jobs */
 function getJobs() {
     try {
         //Connect to DB
-        $db = connectToDB();
+        $db = connectToDB("api");
         
         //Get Result
         $results = $db->query('SELECT jobTitle, companyName, location, description FROM jobs')->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +41,7 @@ function getJobs() {
 function postJob($postJobInfo) {
     try {
         //Connect to DB
-        $db = connectToDB();
+        $db = connectToDB('api');
         
         $query1 = "INSERT INTO jobs (jobTitle, companyName, description, location";
         $query2 = ") VALUES (:jobTitle, :companyName, :description, :location";
@@ -84,7 +91,7 @@ function postJob($postJobInfo) {
 function searchJobs($searchTerms) {
     try {
     //Connect to DB
-    $db = connectToDB();
+    $db = connectToDB('api');
     /*
     $standardQuery = "SELECT name, companyName, location, description FROM jobs";
     $whereClause = " Where";
@@ -116,6 +123,31 @@ function searchJobs($searchTerms) {
     }
     catch(PDOException $e) {
         return json_encode(array("error" => "Failed to search jobs."));
+    }
+}
+
+function deleteJob($jobNumber) {
+    try {
+        //Connect to DB
+        $db = connectToDB('admin');
+        
+        //Get Result
+        $stmt = $db->prepare('DELETE FROM jobs WHERE id = :jobNumber');
+        $stmt->bindParam(':jobNumber', $jobNumber);
+         
+        $stmt->execute();
+        
+        if($stmt->rowCount() == 0) {
+            http_response_code(404);
+            return json_encode(array("success" => false));
+        }
+        else {
+            http_response_code(200);
+            return json_encode(array("success" => true));
+        }
+    }
+    catch(PDOException $e) {
+        return json_encode(array("error" => "Failed to delete job.", "message" => $e.message));
     }
 }
 
@@ -155,6 +187,31 @@ function postVolunteer($postVolunteerInfo) {
     }
     catch(PDOException $e) {
         return json_encode(array("error" => "Failed to post volunteer.", "message" => $e.message));
+    }
+}
+
+function deleteVolunteer($volunteerNumber) {
+    try {
+        //Connect to DB
+        $db = connectToDB('admin');
+        
+        //Get Result
+        $stmt = $db->prepare('DELETE FROM volunteers WHERE id = :volunteerNumber');
+        $stmt->bindParam(':volunteerNumber', $volunteerNumber);
+         
+        $stmt->execute();
+        
+        if($stmt->rowCount() == 0) {
+            http_response_code(404);
+            return json_encode(array("success" => false));
+        }
+        else {
+            http_response_code(200);
+            return json_encode(array("success" => true));
+        }
+    }
+    catch(PDOException $e) {
+        return json_encode(array("error" => "Failed to delete volunteer.", "message" => $e.message));
     }
 }
 
@@ -200,7 +257,7 @@ switch($_SERVER['REQUEST_METHOD']) {
             case 'search':
                 echo searchJobs($testSearchTerms);
             break;
-            //api/volunteers 
+            //api/volunteers //Requires Admin login
             case 'volunteers':
                 echo getVolunteers();
             break;
@@ -208,6 +265,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         break;
     case 'POST':
         $data = json_decode(file_get_contents("php://input"), true);
+        //echo var_dump($data);
         switch($requestParts[2]) {
             //api/jobs
             case 'jobs':
@@ -222,9 +280,20 @@ switch($_SERVER['REQUEST_METHOD']) {
                 echo login($data, $ADMIN_KEY);
             break;
         }
-        //echo var_dump($data);
         break;
-        
+    case 'DELETE':
+        //Delete rows from the database be id number
+        switch($requestParts[2]) {
+            //api/jobs/X
+            case 'jobs':
+                echo deleteJob($requestParts[3]);
+            break;
+            //api/volunteers/X
+            case 'volunteers':
+                echo deleteVolunteer($requestParts[3]);
+            break;
+        }
+        break;
     default:
         echo json_encode(array("error" => "Unsupported method used."));
         break;
