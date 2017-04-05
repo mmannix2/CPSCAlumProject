@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Browse Jobs - UMW Job Database</title>
+    <title>Administrator Control Panel - UMW Job Database</title>
     
     <!-- Font -->
     <link rel="stylesheet" type="text/css"
@@ -46,22 +46,23 @@
         </div>
     </div><!-- end #header -->
     <div id="main">
-        <div id="search">
-            <h2>Search</h2>
-            <form ng-submit="searchJobs()">
-                <label> Job Title
-                    <input type="text" ng-model="searchTerms['jobTitle']"/>
+        <div id="logIn" ng-show="adminKey == undefined">
+            <h2>Log In</h2>
+            <form ng-submit="loginClicked()">
+                <label> Username
+                    <input type="text" ng-model="loginInfo['username']"/>
                 </label>
-                <label> Company Name
-                    <input type="text" ng-model="searchTerms['companyName']"/>
+                <br>
+                <label> Password
+                    <input type="text" ng-model="loginInfo['password']"/>
                 </label>
+                <br>
                 <label>
-                    <input type="submit"/> 
+                    <input type="submit" ng-disabled="!loginInfo['username'] || !loginInfo['password']"/> 
                 </label>
             </form>
         </div>
-        <div id="jobs">
-            
+        <div id="jobs" ng-hide="adminKey == undefined">
             <h2>Jobs</h2>
             <div ng-repeat="job in jobs">
                 <h3>{{ job.name }}</h3>
@@ -71,6 +72,18 @@
             </div>
             <p ng-if="jobs == undefined">
                 There are no available jobs at this time. Please check back later.
+            </p>
+        </div>
+        <div id="volunteers" ng-hide="adminKey == undefined">
+            <h2>Volunteers</h2>
+            <div ng-repeat="volunteer in volunteers">
+                <h3>{{ volunteer.name }}</h3>
+                <h4>{{ volunteer.email }}</h4>
+                <h5>Zip Code: {{ volunteer.location }}</h5>
+                <p>{{ volunteer.description }}</p>
+            </div>
+            <p ng-if="volunteers == undefined">
+                No volunteers available.
             </p>
         </div>
     </div><!-- end #main -->

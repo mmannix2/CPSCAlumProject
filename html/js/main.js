@@ -1,3 +1,4 @@
+//var app = angular.module('CPSCDatabase', ['ngCookies', 'ngRoute']);
 var app = angular.module('CPSCDatabase', ['ngCookies']);
 
 app.factory('dataFactory', ['$http',
@@ -163,6 +164,6 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             $cookies.put('adminKey', undefined);
             $scope.adminKey = undefined;
             $scope.$apply();
-        }
+        };
     }
 ]);

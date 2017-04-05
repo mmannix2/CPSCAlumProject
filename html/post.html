@@ -17,6 +17,7 @@
     <!--Angular-->
     <script src="js/angular.min.js"></script>
     <script src="js/angular-cookies.js"></script>
+    <script src="js/angular-route.js"></script>
     <!--Chrome Mobile Theme Color-->
     <meta name="theme-color" content="#686663">
     <!-- HTML5 shim and Respond.js for IE8 support -->
@@ -89,7 +90,7 @@
     </div><!-- end #main -->
     <div id="footer">
         <h5>
-            <a ng-show="adminKey == undefined" href="login.html">
+            <a ng-show="adminKey == undefined" href="admin.html">
                 Admin Log In
             </a>
             <a ng-hide="adminKey == undefined" ng-click="logoutClicked()">
