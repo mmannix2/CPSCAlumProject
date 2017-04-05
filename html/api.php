@@ -155,7 +155,7 @@ function deleteJob($jobNumber) {
 function getVolunteers() {
     try {
         //Connect to DB
-        $db = connectToDB();
+        $db = connectToDB('admin');
         
         //Get Result
         $results = $db->query('SELECT name, email, description FROM volunteers')->fetchAll(PDO::FETCH_ASSOC);
@@ -169,7 +169,7 @@ function getVolunteers() {
 function postVolunteer($postVolunteerInfo) {
     try {
         //Connect to DB
-        $db = connectToDB();
+        $db = connectToDB('api');
         $query = "INSERT INTO volunteers (name, email, description) VALUES (:name, :email, :description)";
         
         //Insert this job into the DB
