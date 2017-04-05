@@ -1,5 +1,4 @@
-var app = angular.module('CPSCDatabase', []);
-//var app = angular.module('CPSCDatabase', ['ngCookies']);
+var app = angular.module('CPSCDatabase', ['ngCookies']);
 
 app.factory('dataFactory', ['$http',
     function($http) {
@@ -69,14 +68,12 @@ app.factory('dataFactory', ['$http',
     }
 ]);
 
-/*
-app.controller('controller', ['$scope', '$cookie', 'dataFactory' ,
-    function ($scope, $cookie, dataFactory) {
-*/
-app.controller('controller', ['$scope', 'dataFactory' ,
-    function ($scope, dataFactory) {
+app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
+    function ($scope, $cookies, dataFactory) {
         
-        //$scope.adminKey = $cookie.get('adminKey');
+        $scope.adminKey = $cookies.get('adminKey');
+        
+        console.log("adminKey: " + $scope.adminKey);
         
         $scope.jobs = undefined;
         $scope.volunteers = undefined;
@@ -155,7 +152,17 @@ app.controller('controller', ['$scope', 'dataFactory' ,
         //Currently only captures input and prints it to the console
         $scope.loginClicked = function loginClicked() {
             console.log($scope.loginInfo);
-            //$cookie.put('adminKey', dataFactory.login($scope.loginInfo));
+            console.log("Logging in.");
+            $cookies.put('adminKey', dataFactory.login($scope.loginInfo));
+            $scope.adminKey = $cookies.get('adminKey');
+            $scope.$apply();
         };
+        
+        $scope.logoutClicked = function logoutClicked() {
+            console.log("Logging out.");
+            $cookies.put('adminKey', undefined);
+            $scope.adminKey = undefined;
+            $scope.$apply();
+        }
     }
 ]);

@@ -15,9 +15,8 @@
     <!--My CSS-->
     <link href="css/style.css" rel="stylesheet">
     <!--Angular-->
-    <script
-    src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js">
-    </script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-cookies.js"></script>
     <!--Chrome Mobile Theme Color-->
     <meta name="theme-color" content="#686663">
     <!-- HTML5 shim and Respond.js for IE8 support -->
@@ -41,6 +40,7 @@
                 <li><a href="index.html">Browse Jobs</a></li>
                 <li><a href="post.html">Post a Job</a></li>
                 <li><a href="volunteer.html">Volunteer</a></li>
+                <li ng-hide="adminKey == undefined"><a href="admin.html">Admin Control Panel</a></li>
             </ul>
         </div>
     </div><!-- end #header -->
@@ -89,8 +89,11 @@
     </div><!-- end #main -->
     <div id="footer">
         <h5>
-            <a href="login.html">
+            <a ng-show="adminKey == undefined" href="login.html">
                 Admin Log In
+            </a>
+            <a ng-hide="adminKey == undefined" ng-click="logoutClicked()">
+                Admin Log Out
             </a>
         </h5>
     </div><!-- end #footer -->
