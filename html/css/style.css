@@ -167,6 +167,15 @@ input[type="submit"] {
     width: 100%;
 }
 
+/* admin.html */
+#volunteers {
+    width: 70%;
+}
+
+#volunteers div {
+    display: block;
+}
+
 h1, h2, h3, h4, h5, h6 {
     /*text-transform: uppercase;
     font-family: 'Questrial', sans-serif;*/

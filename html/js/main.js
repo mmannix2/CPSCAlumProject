@@ -48,6 +48,16 @@ app.factory('dataFactory', ['$http',
                     console.log(response.message);
                 });
                 return promise;
+            },
+            login: function (loginInfo) {
+                var promise = $http.post('/api/login', loginInfo)
+                .then(function (response){
+                   console.log(response.data);
+                   return response.data;
+                }, function(response){
+                   console.log(response);
+                });
+                return promise;
             }
         };
     }
@@ -57,6 +67,7 @@ app.controller('controller', ['$scope', 'dataFactory' ,
     function getJobs($scope, dataFactory) {
         
         $scope.jobs = undefined;
+        $scope.volunteers = undefined;
         
         //Contains the data from the search jobs form
         $scope.searchTerms = {
@@ -68,7 +79,7 @@ app.controller('controller', ['$scope', 'dataFactory' ,
         }; 
         
         //Contains the data from the log in form
-        $scope.logInInfo = {
+        $scope.loginInfo = {
             "username": undefined,
             "password": undefined
         }; 
@@ -100,6 +111,12 @@ app.controller('controller', ['$scope', 'dataFactory' ,
             console.log(error);
         });
         
+        dataFactory.getVolunteers().then(function (data) {
+            $scope.volunteers = data;
+        }, function (error) {
+            console.log(error);
+        });
+        
         //Currently only captures input and prints it to the console
         $scope.postJobClicked = function postJobClicked() {
             console.log("Trying to post a job.");
@@ -125,13 +142,9 @@ app.controller('controller', ['$scope', 'dataFactory' ,
         };
         
         //Currently only captures input and prints it to the console
-        $scope.postVolunteer = function postVolunteer() {
-            console.log($scope.postVolunteerInfo);
-        };
-        
-        //Currently only captures input and prints it to the console
-        $scope.logIn = function logIn() {
-            console.log($scope.logInInfo);
+        $scope.loginClicked = function loginClicked() {
+            console.log($scope.loginInfo);
+            dataFactory.login($scope.loginInfo);
         };
     }
 ]);

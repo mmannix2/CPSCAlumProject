@@ -7,6 +7,8 @@ $DB_PASSWORD = "password";
 $DB_NAME = "db";
 */
 
+$ADMIN_KEY = NULL;
+
 $searchKeys = array("jobTitle", "companyName", "location");
 
 function connectToDB() {
@@ -156,6 +158,22 @@ function postVolunteer($postVolunteerInfo) {
     }
 }
 
+/* Admin Login */
+function login($loginInfo) {
+    if( strcasecmp($loginInfo[username], "admin") == 0 && strcmp($loginInfo[password], "admin") == 0 ) {
+        //Generate a secret key and pass it to the user.
+        if($ADMIN_KEY == NULL) {
+            $ADMIN_KEY = "123456789"; //Use some bassass hash or something
+        }
+        http_response_code(200);
+        return json_encode(array("adminKey" => $ADMIN_KEY));
+    }
+    else {
+        http_response_code(403);
+        return json_encode(array("status" => "failure"));
+    }
+}
+
 //Get the request
 $requestURI = $_SERVER['REQUEST_URI'];
 $requestParts = explode('/', rtrim($requestURI, '/'));
@@ -195,12 +213,18 @@ switch($_SERVER['REQUEST_METHOD']) {
             case 'jobs':
                 echo postJob($data);
             break;
+            //api/volunteers
             case 'volunteers':
                 echo postVolunteer($data);
+            break;
+            //api/login
+            case 'login':
+                echo login($data, $ADMIN_KEY);
             break;
         }
         //echo var_dump($data);
         break;
+        
     default:
         echo json_encode(array("error" => "Unsupported method used."));
         break;
