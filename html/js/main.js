@@ -1,4 +1,5 @@
 var app = angular.module('CPSCDatabase', []);
+//var app = angular.module('CPSCDatabase', ['ngCookies']);
 
 app.factory('dataFactory', ['$http',
     function($http) {
@@ -48,15 +49,37 @@ app.factory('dataFactory', ['$http',
                     console.log(response.message);
                 });
                 return promise;
+            },
+            //If the correct credentials are given, a token is returned
+            login: function (loginInfo) {
+                var promise = $http.post('/api/login', loginInfo)
+                .then(function (response){
+                    console.log("Response: " + response.status + " " + response.statusText);
+                    console.log("Login Succeded.");
+                    console.log(response.data);
+                    return response.data;
+                }, function(response){
+                    console.log("Response: " + response.status + " " + response.statusText);
+                    console.log("Login Authentication failed.")
+                    return undefined;
+                });
+                return promise;
             }
         };
     }
 ]);
 
+/*
+app.controller('controller', ['$scope', '$cookie', 'dataFactory' ,
+    function ($scope, $cookie, dataFactory) {
+*/
 app.controller('controller', ['$scope', 'dataFactory' ,
-    function getJobs($scope, dataFactory) {
+    function ($scope, dataFactory) {
+        
+        //$scope.adminKey = $cookie.get('adminKey');
         
         $scope.jobs = undefined;
+        $scope.volunteers = undefined;
         
         //Contains the data from the search jobs form
         $scope.searchTerms = {
@@ -68,7 +91,7 @@ app.controller('controller', ['$scope', 'dataFactory' ,
         }; 
         
         //Contains the data from the log in form
-        $scope.logInInfo = {
+        $scope.loginInfo = {
             "username": undefined,
             "password": undefined
         }; 
@@ -100,7 +123,12 @@ app.controller('controller', ['$scope', 'dataFactory' ,
             console.log(error);
         });
         
-        //Currently only captures input and prints it to the console
+        dataFactory.getVolunteers().then(function (data) {
+            $scope.volunteers = data;
+        }, function (error) {
+            console.log(error);
+        });
+        
         $scope.postJobClicked = function postJobClicked() {
             console.log("Trying to post a job.");
             console.log($scope.postJobInfo);
@@ -125,13 +153,9 @@ app.controller('controller', ['$scope', 'dataFactory' ,
         };
         
         //Currently only captures input and prints it to the console
-        $scope.postVolunteer = function postVolunteer() {
-            console.log($scope.postVolunteerInfo);
-        };
-        
-        //Currently only captures input and prints it to the console
-        $scope.logIn = function logIn() {
-            console.log($scope.logInInfo);
+        $scope.loginClicked = function loginClicked() {
+            console.log($scope.loginInfo);
+            //$cookie.put('adminKey', dataFactory.login($scope.loginInfo));
         };
     }
 ]);
