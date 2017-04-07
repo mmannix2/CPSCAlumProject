@@ -30,7 +30,7 @@ function getJobs() {
         $db = connectToDB("api");
         
         //Get Result
-        $results = $db->query('SELECT jobTitle, companyName, location, description FROM jobs')->fetchAll(PDO::FETCH_ASSOC);
+        $results = $db->query('SELECT * FROM jobs')->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);
     }
     catch(PDOException $e) {
@@ -158,7 +158,7 @@ function getVolunteers() {
         $db = connectToDB('admin');
         
         //Get Result
-        $results = $db->query('SELECT name, email, description FROM volunteers')->fetchAll(PDO::FETCH_ASSOC);
+        $results = $db->query('SELECT * FROM volunteers')->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);
     }
     catch(PDOException $e) {
@@ -282,6 +282,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         }
         break;
     case 'DELETE':
+        echo $requestParts[3];
         //Delete rows from the database be id number
         switch($requestParts[2]) {
             //api/jobs/X

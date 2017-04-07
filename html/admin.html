@@ -54,7 +54,7 @@
                 </label>
                 <br>
                 <label> Password
-                    <input type="text" ng-model="loginInfo['password']"/>
+                    <input type="password" ng-model="loginInfo['password']"/>
                 </label>
                 <br>
                 <label>
@@ -62,25 +62,25 @@
                 </label>
             </form>
         </div>
-        <div id="jobs" ng-hide="adminKey == undefined">
+        <div ng-hide="adminKey == undefined">
             <h2>Jobs</h2>
             <div ng-repeat="job in jobs">
-                <h3>{{ job.name }}</h3>
-                <h4>{{ job.companyName }}</h4>
-                <h5>Zip Code: {{ job.location }}</h5>
+                <h3>{{ job.companyName }}</h3>
+                <h4>Zip Code: {{ job.location }}</h4>
                 <p>{{ job.description }}</p>
+                <input class="deleteButton" type="button" value="Delete Job" ng-click="deleteJobClicked(job.id)"/>
             </div>
             <p ng-if="jobs == undefined">
                 There are no available jobs at this time. Please check back later.
             </p>
         </div>
-        <div id="volunteers" ng-hide="adminKey == undefined">
+        <div ng-hide="adminKey == undefined">
             <h2>Volunteers</h2>
             <div ng-repeat="volunteer in volunteers">
                 <h3>{{ volunteer.name }}</h3>
                 <h4>{{ volunteer.email }}</h4>
-                <h5>Zip Code: {{ volunteer.location }}</h5>
                 <p>{{ volunteer.description }}</p>
+                <input class="deleteButton" type="button" value="Delete Volunteer" ng-click="deleteVolunteerClicked(volunteer.id)"/>
             </div>
             <p ng-if="volunteers == undefined">
                 No volunteers available.
@@ -92,7 +92,7 @@
             <a ng-show="adminKey == undefined" href="admin.html">
                 Admin Log In
             </a>
-            <a ng-hide="adminKey == undefined" ng-click="logoutClicked()">
+            <a ng-hide="adminKey == undefined" href="#" ng-click="logoutClicked()">
                 Admin Log Out
             </a>
         </h5>

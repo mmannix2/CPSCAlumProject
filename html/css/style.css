@@ -168,11 +168,11 @@ input[type="submit"] {
 }
 
 /* admin.html */
-#volunteers {
-    width: 70%;
+.deleteButton {
+    color: #002B5A;
 }
 
-#volunteers div {
+#main div div {
     display: block;
 }
 
@@ -207,11 +207,6 @@ a, a:hover {
     font-weight: 600;
     text-decoration: none;
 }
-
-a:hover {
-    /*opacity: 0.50;*/
-}
-
 
 @media only screen and (max-width: 1200px) {
     html body {

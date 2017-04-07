@@ -40,10 +40,10 @@ app.factory('dataFactory', ['$http',
             },
             postVolunteer: function (postVolunteerInfo) {
                 var promise = $http.post('/api/volunteers', postVolunteerInfo) 
-                .then(function (response){
+                .then(function (response) {
                     console.log(response.data);
                     return response.data;
-                }, function (response){
+                }, function (response) {
                     //Error
                     console.log(response.error);
                     console.log(response.message);
@@ -53,15 +53,37 @@ app.factory('dataFactory', ['$http',
             //If the correct credentials are given, a token is returned
             login: function (loginInfo) {
                 var promise = $http.post('/api/login', loginInfo)
-                .then(function (response){
+                .then(function (response) {
                     console.log("Response: " + response.status + " " + response.statusText);
-                    console.log("Login Succeded.");
+                    console.log("Login succeded.");
                     console.log(response.data);
                     return response.data;
+                }, function(response) {
+                    console.log("Response: " + response.status + " " + response.statusText);
+                    console.log("Login authentication failed.");
+                    return undefined;
+                });
+                return promise;
+            },
+            deleteJob: function (jobNumber) {
+                var promise = $http.delete('/api/jobs/'.concat(jobNumber))
+                .then(function (response) {
+                    console.log("Response: " + response.status + " " + response.statusText);
+                    console.log("Deleted job.");
                 }, function(response){
                     console.log("Response: " + response.status + " " + response.statusText);
-                    console.log("Login Authentication failed.")
-                    return undefined;
+                    console.log("Failed to delete job.");
+                });
+                return promise;
+            },
+            deleteVolunteer: function (volunteerNumber) {
+                var promise = $http.delete('/api/volunteers/'.concat(volunteerNumber))
+                .then(function (response) {
+                    console.log("Response: " + response.status + " " + response.statusText);
+                    console.log("Deleted volunteer.");
+                }, function(response){
+                    console.log("Response: " + response.status + " " + response.statusText);
+                    console.log("Failed to delete volunteer.");
                 });
                 return promise;
             }
@@ -164,6 +186,34 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             $cookies.put('adminKey', undefined);
             $scope.adminKey = undefined;
             $scope.$apply();
+        };
+    
+        $scope.deleteJobClicked = function deleteJobClicked(jobNumber) {
+            console.log("Deleting job #" + jobNumber);
+            dataFactory.deleteJob(jobNumber);
+            
+            //Delete the job from $scope.jobs
+            var i = 0;
+            for(var len = $scope.job.length; i < len; i++) {
+                if($scope.jobs[i].id == jobNumber) {
+                    break;
+                }
+            }
+            $scope.volunteers.splice(i, 1);
+        };
+        
+        $scope.deleteVolunteerClicked = function deleteVolunteerClicked(volunteerNumber) {
+            console.log("Deleting volunteer #" + volunteerNumber);
+            dataFactory.deleteVolunteer(volunteerNumber);
+            
+            //Delete the volunteer from $scope.volunteers
+            var i = 0;
+            for(var len = $scope.volunteers.length; i < len; i++) {
+                if($scope.volunteers[i].id == volunteerNumber) {
+                    break;
+                }
+            }
+            $scope.volunteers.splice(i, 1);
         };
     }
 ]);
