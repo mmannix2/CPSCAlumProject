@@ -159,12 +159,14 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
                 $scope.$apply();
             }
             */
+            $scope.postJobInfo=[];
         };
         
         $scope.postVolunteerClicked = function postVolunteerClicked() {
             console.log("Trying to post a volunteer.");
             console.log($scope.postVolunteerInfo);
             dataFactory.postVolunteer($scope.postVolunteerInfo);
+            $scope.postVolunteerInfo=[];
         };
         
         //Currently only captures input and prints it to the console

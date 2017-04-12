@@ -18,7 +18,7 @@ function connectToDB($user) {
             return new PDO("mysql:host=127.0.0.1;dbname=db", "api", "password", $options);
         break;
         case 'admin':
-            return new PDO("mysql:host=127.0.0.1;dbname=db", "admin", "", $options); //For whatever reason, admin doesn't like to use a password
+            return new PDO("mysql:host=127.0.0.1;dbname=db", "admin", "admin", $options); //For whatever reason, admin doesn't like to use a password
         break;
     }
 }
@@ -155,7 +155,7 @@ function deleteJob($jobNumber) {
 function getVolunteers() {
     try {
         //Connect to DB
-        $db = connectToDB('admin');
+        $db = connectToDB('api');
         
         //Get Result
         $results = $db->query('SELECT * FROM volunteers')->fetchAll(PDO::FETCH_ASSOC);
