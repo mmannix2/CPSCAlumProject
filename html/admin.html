@@ -65,8 +65,9 @@
         <div ng-hide="adminKey == undefined">
             <h2>Jobs</h2>
             <div ng-repeat="job in jobs">
-                <h3>{{ job.companyName }}</h3>
-                <h4>Zip Code: {{ job.location }}</h4>
+                <h3>{{ job.jobTitle }}</h3>
+                <h4>{{ job.companyName }}</h4>
+                <h5>Zip Code: {{ job.location }}</h5>
                 <p>{{ job.description }}</p>
                 <input class="deleteButton" type="button" value="Delete Job" ng-click="deleteJobClicked(job.id)"/>
             </div>
