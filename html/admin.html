@@ -74,8 +74,7 @@
             <p ng-if="jobs == undefined">
                 There are no available jobs at this time. Please check back later.
             </p>
-        </div>
-        <div ng-hide="adminKey == undefined">
+            <hr>
             <h2>Volunteers</h2>
             <div ng-repeat="volunteer in volunteers">
                 <h3>{{ volunteer.name }}</h3>
@@ -85,6 +84,35 @@
             </div>
             <p ng-if="volunteers == undefined">
                 No volunteers available.
+            </p>
+            <hr>
+            <h2>Announcements</h2>
+            <div ng-repeat="announcement in announcements">
+                <h3>{{ announcement.title }}</h3>
+                <p>{{ announcement.description }}</p>
+                <input class="deleteButton" type="button" value="Delete Announcements" ng-click="deleteAnnouncementClicked(announcement.id)"/>
+            </div>
+            <hr>
+            <h2>Add Announcement</h2>
+            <div>
+                <form>
+                    <label>
+                        Title:
+                        <input type="text" ng-model="postAnnouncementInfo['title']">
+                    </label>
+                    <br>
+                    <label>
+                        Description:
+                        <textarea name="description" maxlength="600" ng-model="postAnnouncementInfo['description']"></textarea>
+                    </label>
+                    <br>
+                    <label>
+                        <input type="submit"/>
+                    </label>
+                </form>
+            </div>
+            <p ng-if="announcements == undefined">
+                No announcements available.
             </p>
         </div>
     </div><!-- end #main -->

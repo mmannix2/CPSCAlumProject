@@ -86,7 +86,18 @@ app.factory('dataFactory', ['$http',
                     console.log("Failed to delete volunteer.");
                 });
                 return promise;
-            }
+            },
+            getAnnouncements: function () {
+                var promise = $http.get('/api/announcements/')
+                .then(function (response) {
+                    console.log(response.data);
+                    return response.data;
+                }, function (response) {
+                    //Error
+                    console.log(response.error);
+                });
+                return promise;
+            },
         };
     }
 ]);
@@ -100,6 +111,7 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         
         $scope.jobs = undefined;
         $scope.volunteers = undefined;
+        $scope.announcements = undefined;
         
         //Contains the data from the search jobs form
         $scope.searchTerms = {
@@ -135,10 +147,24 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             "description": undefined
         };
         
-        $scope.postVolunteerStatus = "Volunteer not yet submitted.";
+        $scope.postVolunteerStatus = "Volunteer data not yet submitted.";
+        
+        //Contains the data from an announcement
+        $scope.postAnnouncementInfo = {
+            "title": undefined,
+            "description": undefined
+        };
+        
+        $scope.postAnnouncementStatus = "Announcement not yet submitted.";
         
         dataFactory.getJobs().then(function (data) {
             $scope.jobs = data;
+        }, function (error) {
+            console.log(error);
+        });
+        
+        dataFactory.getAnnouncements().then(function (data) {
+            $scope.announcements = data;
         }, function (error) {
             console.log(error);
         });
@@ -153,12 +179,6 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             console.log("Trying to post a job.");
             console.log($scope.postJobInfo);
             dataFactory.postJob($scope.postJobInfo);
-            /* TODO Find a way to notify the user that the form was submitted successfully.
-            if(success == true ) {
-                $scope.postJobStatus = "Job posted successfully!";
-                $scope.$apply();
-            }
-            */
             $scope.postJobInfo=[];
         };
         
@@ -196,12 +216,13 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             
             //Delete the job from $scope.jobs
             var i = 0;
-            for(var len = $scope.job.length; i < len; i++) {
+            for(var len = $scope.jobs.length; i < len; i++) {
                 if($scope.jobs[i].id == jobNumber) {
                     break;
                 }
             }
-            $scope.volunteers.splice(i, 1);
+            $scope.jobs.splice(i, 1);
+            //$scope.$apply();
         };
         
         $scope.deleteVolunteerClicked = function deleteVolunteerClicked(volunteerNumber) {
@@ -216,6 +237,7 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
                 }
             }
             $scope.volunteers.splice(i, 1);
+            //$scope.$apply();
         };
     }
 ]);

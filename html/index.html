@@ -59,6 +59,11 @@
                     <input type="submit"/> 
                 </label>
             </form>
+            <h2>Announcements</h2>
+            <div ng-repeat="announcement in announcements">
+                <h3>{{ announcement.title }}</h3>
+                <p>{{ announcement.description}}</p>
+            </div>
         </div>
         <div id="jobs">
             

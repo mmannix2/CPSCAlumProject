@@ -215,6 +215,22 @@ function deleteVolunteer($volunteerNumber) {
     }
 }
 
+/* Announcements */
+function getAnnouncements() {
+    try {
+        //Connect to DB
+        $db = connectToDB("api");
+        
+        //Get Result
+        $results = $db->query('SELECT * FROM announcements')->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($results);
+    }
+    catch(PDOException $e) {
+        echo $e;
+        return json_encode(array("error" => "Failed to load announcements."));
+    }
+}
+
 /* Admin Login */
 function login($loginInfo) {
     if( strcasecmp($loginInfo[username], "admin") == 0 && strcmp($loginInfo[password], "admin") == 0 ) {
@@ -260,6 +276,10 @@ switch($_SERVER['REQUEST_METHOD']) {
             //api/volunteers //Requires Admin login
             case 'volunteers':
                 echo getVolunteers();
+            break;
+            //api/announcements
+            case 'announcements':
+                echo getAnnouncements();
             break;
         }
         break;
