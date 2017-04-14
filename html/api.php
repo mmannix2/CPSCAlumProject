@@ -21,9 +21,7 @@ admin actions: These require admin login and adminKey authentication
     delete announcement
 */
 
-$ADMIN_KEY = NULL;
-
-$searchKeys = array("jobTitle", "companyName", "location");
+$ADMIN_KEY = 123456789;
 
 function connectToDB($user) {
     $options = array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION );
@@ -36,22 +34,78 @@ function connectToDB($user) {
         break;
     }
 }
- 
-/* Jobs */
-function getJobs() {
+
+/* Delete Function */
+function deleteRow($table, $id) {
+    try {
+        $db = connectToDB('admin');
+        
+        $query = 'DELETE FROM ';
+        $query .= $table;
+        $query .= ' WHERE id = :id';
+        
+        //echo $query;
+        
+        $stmt = $db->prepare($query);
+        //$stmt->bindParam(':table', $table, PDO::PARAM_STR, 13);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+         
+        $stmt->execute();
+        
+        if($stmt->rowCount() == 0) {
+            http_response_code(404);
+            return json_encode(array("success" => false));
+        }
+        else {
+            http_response_code(200);
+            return json_encode(array("success" => true));
+        }
+    }
+    catch(PDOException $e) {
+        return json_encode(array("error" => "Failed to delete row " .$id ." of " .$table, "message" => $e.message));
+    }
+}
+
+/* Get Functions */
+function get($table) {
     try {
         //Connect to DB
         $db = connectToDB("api");
         
+        $query = 'SELECT * FROM ';
+        $query .= $table;
+        
+        //echo $query;
+        
         //Get Result
-        $results = $db->query('SELECT * FROM jobs')->fetchAll(PDO::FETCH_ASSOC);
+        $results = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
         return json_encode($results);
     }
     catch(PDOException $e) {
-        return json_encode(array("error" => "Failed to load jobs."));
+        return json_encode(array("error" => "Failed to load " .$table));
     }
 }
 
+function adminGet($table) {
+    try {
+        //Connect to DB
+        $db = connectToDB("admin");
+        
+        $query = 'SELECT * FROM ';
+        $query .= $table;
+        
+        //echo $query;
+        
+        //Get Result
+        $results = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        return json_encode($results);
+    }
+    catch(PDOException $e) {
+        return json_encode(array("error" => "Failed to load " .$table));
+    }
+}
+
+/* Post Functions */
 function postJob($postJobInfo) {
     try {
         //Connect to DB
@@ -104,77 +158,10 @@ function searchJobs($searchTerms) {
     try {
     //Connect to DB
     $db = connectToDB('api');
-    /*
-    $standardQuery = "SELECT name, companyName, location, description FROM jobs";
-    $whereClause = " Where";
-        $out = "";
-        
-        
-        foreach($searchTerms as $key => $value) {
-            $out .= "$key:$value/";
-        }
-    */    
-        //Job Search Criteria
-        /*
-        For each key in $searchKeys:
-            for each element in searchTerms:
-                if element.key == this.key:
-                    array[this.key] = element.value
-                else:
-                    array[this.key] = NULL
-        */
-        
-        //foreach()
-        
-        //Get Search Results
-        //$results = $db->query('SELECT name, companyName, location, description FROM jobs')->fetchAll(PDO::FETCH_ASSOC);
-        //return json_encode($results);
-        
-        //return $out;
         return json_encode(array("status" => "code incomplete!"));
     }
     catch(PDOException $e) {
         return json_encode(array("error" => "Failed to search jobs."));
-    }
-}
-
-function deleteJob($jobNumber) {
-    try {
-        //Connect to DB
-        $db = connectToDB('admin');
-        
-        //Get Result
-        $stmt = $db->prepare('DELETE FROM jobs WHERE id = :jobNumber');
-        $stmt->bindParam(':jobNumber', $jobNumber);
-         
-        $stmt->execute();
-        
-        if($stmt->rowCount() == 0) {
-            http_response_code(404);
-            return json_encode(array("success" => false));
-        }
-        else {
-            http_response_code(200);
-            return json_encode(array("success" => true));
-        }
-    }
-    catch(PDOException $e) {
-        return json_encode(array("error" => "Failed to delete job.", "message" => $e.message));
-    }
-}
-
-/* Volunteers */
-function getVolunteers() {
-    try {
-        //Connect to DB
-        $db = connectToDB('api');
-        
-        //Get Result
-        $results = $db->query('SELECT * FROM volunteers')->fetchAll(PDO::FETCH_ASSOC);
-        return json_encode($results);
-    }
-    catch(PDOException $e) {
-        return json_encode(array("error" => "Failed to load volunteers."));
     }
 }
 
@@ -197,47 +184,6 @@ function postVolunteer($postVolunteerInfo) {
     }
     catch(PDOException $e) {
         return json_encode(array("error" => "Failed to post volunteer.", "message" => $e.message));
-    }
-}
-
-function deleteVolunteer($volunteerNumber) {
-    try {
-        //Connect to DB
-        $db = connectToDB('admin');
-        
-        //Get Result
-        $stmt = $db->prepare('DELETE FROM volunteers WHERE id = :volunteerNumber');
-        $stmt->bindParam(':volunteerNumber', $volunteerNumber);
-         
-        $stmt->execute();
-        
-        if($stmt->rowCount() == 0) {
-            http_response_code(404);
-            return json_encode(array("success" => false));
-        }
-        else {
-            http_response_code(200);
-            return json_encode(array("success" => true));
-        }
-    }
-    catch(PDOException $e) {
-        return json_encode(array("error" => "Failed to delete volunteer.", "message" => $e.message));
-    }
-}
-
-/* Announcements */
-function getAnnouncements() {
-    try {
-        //Connect to DB
-        $db = connectToDB("api");
-        
-        //Get Result
-        $results = $db->query('SELECT * FROM announcements')->fetchAll(PDO::FETCH_ASSOC);
-        return json_encode($results);
-    }
-    catch(PDOException $e) {
-        echo $e;
-        return json_encode(array("error" => "Failed to load announcements."));
     }
 }
 
@@ -279,9 +225,8 @@ function login($loginInfo) {
 }
 
 /* Authenticate adminKey */
-function authenticate($ADMIN_KEY, $adminKey) {
-    //If $adminKey matches $ADMIN_KEY, return true, else return false.
-    return true;
+function auth($ADMIN_KEY, $adminKey) {
+    return $ADMIN_KEY == $adminKey;
 }
 
 //Get the request
@@ -299,30 +244,33 @@ $postJob3 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "des
 $postJob4 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "email" => "boss@TechCorp.com", "link" => "TechCorp.com/jobs/12345/1");
 */
 
+$auth_token = 123456789;
+
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         switch($requestParts[2]) {
-            //api/jobs
+            //If looking for jobs or announcements, go ahead
             case 'jobs':
-                echo getJobs();
-            break;
-            //api/search
-            case 'search':
-                echo searchJobs($testSearchTerms);
-            break;
-            //api/volunteers //Requires Admin login
-            case 'volunteers':
-                echo getVolunteers();
-            break;
-            //api/announcements
             case 'announcements':
-                echo getAnnouncements();
+                echo get($requestParts[2]);
+            break;
+            //If looking for volunteers, authenticate first
+            case 'volunteers':
+                if(auth($ADMIN_KEY, $auth_token)) {
+                    echo 'Authentication successful.';
+                    echo adminGet($requestParts[2]);
+                }
+                else {
+                    echo 'Authentication failed.';
+                    http_response_code(403);
+                    return json_encode(array("success" => false));
+                }
             break;
         }
         break;
     case 'POST':
         $data = json_decode(file_get_contents("php://input"), true);
-        //echo var_dump($data);
+        //These are all pretty unique, so they have their own functions
         switch($requestParts[2]) {
             //api/jobs
             case 'jobs':
@@ -334,7 +282,16 @@ switch($_SERVER['REQUEST_METHOD']) {
             break;
             //api/announcements
             case 'announcements':
-                echo postAnnouncement($data);
+                //Authenticate first
+                if(auth($ADMIN_KEY, $auth_token)) {
+                    echo 'Authentication successful.';
+                        echo postAnnouncement($data);
+                }
+                else {
+                    echo 'Authentication failed.';
+                    http_response_code(403);
+                    return json_encode(array("success" => false));
+                }
             break;
             //api/login
             case 'login':
@@ -343,17 +300,15 @@ switch($_SERVER['REQUEST_METHOD']) {
         }
         break;
     case 'DELETE':
-        echo $requestParts[3];
-        //Delete rows from the database be id number
-        switch($requestParts[2]) {
-            //api/jobs/X
-            case 'jobs':
-                echo deleteJob($requestParts[3]);
-            break;
-            //api/volunteers/X
-            case 'volunteers':
-                echo deleteVolunteer($requestParts[3]);
-            break;
+        //Authenticate first
+        if(auth($ADMIN_KEY, $auth_token)) {
+            echo 'Authentication successful.';
+            echo deleteRow($requestParts[2], $requestParts[3]);
+        }
+        else {
+            echo 'Authentication failed.';
+            http_response_code(403);
+            return json_encode(array("success" => false));
         }
         break;
     default:

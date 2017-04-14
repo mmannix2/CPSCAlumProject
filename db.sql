@@ -23,9 +23,17 @@ CREATE TABLE announcements (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, title VA
 INSERT INTO announcements (title, description) VALUES ("Test Announcement", "There will be an event on Tuesday, April 18th.");
 INSERT INTO announcements (title, description) VALUES ("Test Announcement #2", "There will be a second event on Tuesday, April 18th.");
 
+/*
+DROP USER IF EXISTS 'api'@'localhost';
+DROP USER IF EXISTS 'admin'@'localhost';
+
+CREATE USER 'api'@'localhost' IDENTIFIED by 'password';
+CREATE USER 'admin'@'localhost' IDENTIFIED by 'admin';
+*/
+
 GRANT SELECT, INSERT ON db.jobs TO 'api'@'localhost';
-GRANT SELECT, INSERT ON db.volunteers TO 'api'@'localhost'; /* INSERT only */
-GRANT SELECT, INSERT ON db.announcements TO 'api'@'localhost'; /* SELECT only */
+GRANT INSERT ON db.volunteers TO 'api'@'localhost'; /* INSERT only */
+GRANT SELECT ON db.announcements TO 'api'@'localhost'; /* SELECT only */
 
 GRANT ALL ON db.jobs TO 'admin'@'localhost';
 GRANT ALL ON db.volunteers TO 'admin'@'localhost';
