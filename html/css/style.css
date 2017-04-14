@@ -163,6 +163,11 @@ input[type="submit"] {
 }
 
 /* login.html */
+
+#admin {
+    width: 100%;
+}
+
 #logIn {
     width: 100%;
 }

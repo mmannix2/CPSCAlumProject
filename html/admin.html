@@ -62,7 +62,7 @@
                 </label>
             </form>
         </div>
-        <div ng-hide="adminKey == undefined">
+        <div ng-hide="adminKey == undefined" id="admin">
             <h2>Jobs</h2>
             <div ng-repeat="job in jobs">
                 <h4>{{ job.jobTitle }} at {{ job.companyName }}</h4>
@@ -75,8 +75,8 @@
                 <br>
                 <br>
             </div>
-            <p ng-if="jobs == undefined">
-                There are no available jobs at this time. Please check back later.
+            <p ng-if="jobs == undefined || jobs.length == 0">
+                No jobs available.
             </p>
             <hr>
             <h2>Volunteers</h2>
@@ -88,7 +88,7 @@
                 <br>
                 <br>
             </div>
-            <p ng-if="volunteers == undefined">
+            <p ng-if="volunteers == undefined || volunteers.length == 0">
                 No volunteers available.
             </p>
             <hr>
@@ -100,7 +100,7 @@
                 <br>
                 <br>
             </div>
-            <p ng-if="announcements == undefined">
+            <p ng-if="announcements == undefined || announcements.length == 0">
                 No announcements available.
             </p>
             <hr>

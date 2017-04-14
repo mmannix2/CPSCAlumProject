@@ -59,7 +59,6 @@ app.factory('dataFactory', ['$http',
                 .then(function (response) {
                     console.log("Response: " + response.status + " " + response.statusText);
                     console.log("Login succeded.");
-                    console.log(response.data.adminKey);
                     return response.data.adminKey;
                 }, function(response) {
                     console.log("Response: " + response.status + " " + response.statusText);
@@ -222,33 +221,64 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             console.log("Trying to post a job.");
             console.log($scope.postJobInfo);
             //Add this job to the DB
-            dataFactory.postJob($scope.postJobInfo);
-            //Add this job to the local array of jobs 
-            $scope.jobs.push($scope.postJobInfo);
-            //Clear the form
-            $scope.postJobInfo=[];
+            dataFactory.postJob($scope.postJobInfo)
+            .then(function(response){
+                //Add this job to the local array of jobs 
+                $scope.jobs.push($scope.postJobInfo);
+                
+                //Clear the form
+                $scope.postJobInfo=[];
+                
+                //Change the status message
+                $scope.postJobStatus = "Job posted successfully!";
+            }, function(response){
+                //Change the status message
+                $scope.postJobStatus = "Job post failed!";
+            });
         };
         
         $scope.postVolunteerClicked = function postVolunteerClicked() {
             console.log("Trying to post a volunteer.");
             console.log($scope.postVolunteerInfo);
             //Add this volunteer to the DB
-            dataFactory.postVolunteer($scope.postVolunteerInfo);
-            //Add this volunteer to the local array of volunteers
-            $scope.volunteers.push($scope.postVolunteerInfo);
-            //Clear the form
-            $scope.postVolunteerInfo=[];
+            dataFactory.postVolunteer($scope.postVolunteerInfo)
+            .then(function(response){
+                //Add this volunteer to the local array of volunteers
+                if($scope.volunteers != undefined) {
+                    $scope.volunteers.push($scope.postVolunteerInfo);
+                }
+                
+                //Clear the form
+                $scope.postVolunteerInfo=[];
+                
+                //Change the status message
+                $scope.postVolunteerStatus = "Volunteer data posted successfully!";
+            }, function(response){
+                //Change the status message
+                $scope.postVolunteerStatus = "Volunteer data post failed!";
+            });
         };
         
         $scope.postAnnouncementClicked = function postAnnouncementClicked() {
             console.log("Trying to post an Announcement.");
             console.log($scope.postAnnouncementInfo);
             //Add this announcement to the DB
-            dataFactory.postAnnouncement($scope.postAnnouncementInfo);
-            //Add this announcement to the local array of announcements 
-            $scope.announcements.push($scope.postAnnouncementInfo);
-            //Clear the form
-            $scope.postAnnouncementInfo=[];
+            dataFactory.postAnnouncement($scope.adminKey, $scope.postAnnouncementInfo)
+            .then(function(response) {
+                //Add this announcement to the local array of announcements 
+                $scope.announcements.push($scope.postAnnouncementInfo);
+                
+                //Clear the form
+                $scope.postAnnouncementInfo=[];
+            
+                //Change the status message
+                $scope.postAnnouncementStatus = "Announcement posted successfully!";
+            }, function(response) {
+                //Change the status message
+                $scope.postAnnouncementStatus = "Announcement post failed!";
+            
+                $scope.adminKey = undefined;
+            });
         };
         
         //Delete functions
