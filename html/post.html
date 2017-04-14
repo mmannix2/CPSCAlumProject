@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Post a job - UMW Job Database</title>
+    <title>Post a Job - UMW Job Database</title>
     
     <!-- Font -->
     <link rel="stylesheet" type="text/css"
@@ -47,31 +47,31 @@
     </div><!-- end #header -->
     <div id="main">
         <div id=post>
-            <h2>Post a job</h2>
+            <h2>Post a Job</h2>
             <form ng-submit="postJobClicked()">
                 <label>
                     Job Title:
-                    <input type="text" name="jobTitle" ng-model="postJobInfo['jobTitle']">
+                    <input type="text" name="jobTitle" ng-model="postJobInfo['jobTitle']"/>
                 </label>
                 <br>
                 <label>
                     Company Name:
-                    <input type="text" name="companyName" ng-model="postJobInfo['companyName']">
+                    <input type="text" name="companyName" ng-model="postJobInfo['companyName']"/>
                 </label>
                 <br>
                 <label>
                     Zipcode:
-                    <input type="text" name="location" ng-model="postJobInfo['location']">
+                    <input type="text" name="location" ng-model="postJobInfo['location']"/>
                 </label>
                 <br>
                 <label>
-                    Contact info:
-                    <input type="text" name="email" ng-model="postJobInfo['email']">
+                    Email:
+                    <input type="text" name="email" ng-model="postJobInfo['email']"/>
                 </label>
                 <br>
                 <label>
                     External Link:
-                    <input type="text" name="link" ng-model="postJobInfo['link']">
+                    <input type="text" name="link" ng-model="postJobInfo['link']"/>
                 </label>
                 <br>
                 <label>
@@ -80,7 +80,7 @@
                 </label>
                 <br>
                 <label>
-                    <input type="submit" ng-disabled="(!postJobInfo['jobTitle'] || !postJobInfo['companyName'] || !postJobInfo['description'] || !postJobInfo['location']) || (!postJobInfo['email'] && !postJobInfo['link'])">
+                    <input type="submit" ng-disabled="(!postJobInfo['jobTitle'] || !postJobInfo['companyName'] || !postJobInfo['description'] || !postJobInfo['location']) || (!postJobInfo['email'] && !postJobInfo['link'])"/>
                 </label>
             </form> 
         </div>

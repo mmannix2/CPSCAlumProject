@@ -132,6 +132,10 @@ input[type="submit"] {
     display: block;
 }
 
+#detail {
+    color: #002B5A;
+}
+
 /* post.html */
 #post {
     width: 100%;
@@ -170,6 +174,18 @@ input[type="submit"] {
 /* admin.html */
 .deleteButton {
     color: #002B5A;
+}
+
+#announcement {
+    width: 100%;
+}
+
+#announcement form * {
+    width: 100%;
+}
+
+#announcement form textarea {
+    min-height: 10em;
 }
 
 #main div div {

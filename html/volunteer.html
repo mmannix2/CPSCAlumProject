@@ -48,31 +48,32 @@
     <div id="main">
         <div id="volunteer">
             <h2>Volunteer!</h2>
+            <p>
+                This is where the message from Dr. Anewalt will go.
+            </p>
             <form ng-submit="postVolunteerClicked()">
                 <label>
                     Name:
-                    <input type="text" ng-model="postVolunteerInfo['name']">
+                    <input type="text" ng-model="postVolunteerInfo['name']"/>
                 </label>
                 <br>
                 <label>
-                    Zipcode:
-                    <input type="text" maxlength=5 ng-model="postVolunteerInfo['location']">
+                    Email:
+                    <input type="text" ng-model="postVolunteerInfo['email']"/>
                 </label>
                 <br>
                 <label>
-                    Contact info:
-                    <input type="text" ng-model="postVolunteerInfo['email']">
-                </label>
-                <br>
-                <label>
-                    About me
+                    Description:
                     <textarea name="aboutMe" maxlength="600" ng-model="postVolunteerInfo['description']"></textarea>
                 </label>
                 <br>
                 <label>
-                    <input type="submit"/>
+                    <input type="submit" ng-disabled="!postVolunteerInfo['name'] || !postVolunteerInfo['email'] || !postVolunteerInfo['description']"/>
                 </label>
             </form>
+        </div>
+        <div>
+            {{postVolunteerStatus}}
         </div>
     </div><!-- end #main -->
     <div id="footer">

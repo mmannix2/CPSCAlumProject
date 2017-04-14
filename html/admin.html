@@ -65,11 +65,15 @@
         <div ng-hide="adminKey == undefined">
             <h2>Jobs</h2>
             <div ng-repeat="job in jobs">
-                <h3>{{ job.jobTitle }}</h3>
-                <h4>{{ job.companyName }}</h4>
+                <h4>{{ job.jobTitle }} at {{ job.companyName }}</h4>
                 <h5>Zip Code: {{ job.location }}</h5>
                 <p>{{ job.description }}</p>
+                <h5>Apply To:</h5>
+                <h5 ng-show="job.email != null">{{ job.email }}</h5>
+                <h5 ng-show="job.link != null"><a href="{{job.link}}" target="_blank">{{ job.link }}</a></h5>
                 <input class="deleteButton" type="button" value="Delete Job" ng-click="deleteJobClicked(job.id)"/>
+                <br>
+                <br>
             </div>
             <p ng-if="jobs == undefined">
                 There are no available jobs at this time. Please check back later.
@@ -77,10 +81,12 @@
             <hr>
             <h2>Volunteers</h2>
             <div ng-repeat="volunteer in volunteers">
-                <h3>{{ volunteer.name }}</h3>
-                <h4>{{ volunteer.email }}</h4>
+                <h4>{{ volunteer.name }}</h4>
+                <h5>{{ volunteer.email }}</h5>
                 <p>{{ volunteer.description }}</p>
                 <input class="deleteButton" type="button" value="Delete Volunteer" ng-click="deleteVolunteerClicked(volunteer.id)"/>
+                <br>
+                <br>
             </div>
             <p ng-if="volunteers == undefined">
                 No volunteers available.
@@ -88,17 +94,22 @@
             <hr>
             <h2>Announcements</h2>
             <div ng-repeat="announcement in announcements">
-                <h3>{{ announcement.title }}</h3>
+                <h4>{{ announcement.title }}</h4>
                 <p>{{ announcement.description }}</p>
                 <input class="deleteButton" type="button" value="Delete Announcements" ng-click="deleteAnnouncementClicked(announcement.id)"/>
+                <br>
+                <br>
             </div>
+            <p ng-if="announcements == undefined">
+                No announcements available.
+            </p>
             <hr>
-            <h2>Add Announcement</h2>
-            <div>
-                <form>
+            <div id="announcement">
+                <h2>Add Announcement</h2>
+                <form ng-submit="postAnnouncementClicked()">
                     <label>
                         Title:
-                        <input type="text" ng-model="postAnnouncementInfo['title']">
+                        <input type="text" ng-model="postAnnouncementInfo['title']"/>
                     </label>
                     <br>
                     <label>
@@ -107,13 +118,13 @@
                     </label>
                     <br>
                     <label>
-                        <input type="submit"/>
+                        <input type="submit" ng-disabled="!postAnnouncementInfo['title'] || !postAnnouncementInfo['description']"/>
                     </label>
                 </form>
             </div>
-            <p ng-if="announcements == undefined">
-                No announcements available.
-            </p>
+            <div>
+                {{postAnnouncementStatus}}
+            </div> 
         </div>
     </div><!-- end #main -->
     <div id="footer">

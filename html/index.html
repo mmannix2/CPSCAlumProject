@@ -69,10 +69,13 @@
             
             <h2>Jobs</h2>
             <div ng-repeat="job in jobs">
-                <h3>{{ job.jobTitle }}</h3>
-                <h4>{{ job.companyName }}</h4>
+                <h4>{{ job.jobTitle }} at {{ job.companyName }}</h4>
                 <h5>Zip Code: {{ job.location }}</h5>
                 <p>{{ job.description }}</p>
+                <h5>Apply To:</h5>
+                <h5 ng-show="job.email != null">{{ job.email }}</h5>
+                <h5 ng-show="job.link != null"><a href="{{job.link}}" target="_blank">{{ job.link }}</a></h5>
+                <br>
             </div>
             <p ng-if="jobs == undefined">
                 There are no available jobs at this time. Please check back later.
