@@ -187,48 +187,41 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             console.log(error);
         });
         
+        //Post functions
         $scope.postJobClicked = function postJobClicked() {
             console.log("Trying to post a job.");
             console.log($scope.postJobInfo);
+            //Add this job to the DB
             dataFactory.postJob($scope.postJobInfo);
+            //Add this job to the local array of jobs 
+            $scope.jobs.push($scope.postJobInfo);
+            //Clear the form
             $scope.postJobInfo=[];
         };
         
         $scope.postVolunteerClicked = function postVolunteerClicked() {
             console.log("Trying to post a volunteer.");
             console.log($scope.postVolunteerInfo);
+            //Add this volunteer to the DB
             dataFactory.postVolunteer($scope.postVolunteerInfo);
+            //Add this volunteer to the local array of volunteers
+            $scope.volunteers.push($scope.postVolunteerInfo);
+            //Clear the form
             $scope.postVolunteerInfo=[];
         };
         
         $scope.postAnnouncementClicked = function postAnnouncementClicked() {
             console.log("Trying to post an Announcement.");
             console.log($scope.postAnnouncementInfo);
+            //Add this announcement to the DB
             dataFactory.postAnnouncement($scope.postAnnouncementInfo);
+            //Add this announcement to the local array of announcements 
+            $scope.announcements.push($scope.postAnnouncementInfo);
+            //Clear the form
             $scope.postAnnouncementInfo=[];
         };
         
-        //Currently only captures input and prints it to the console
-        $scope.searchJobs = function searchJobs() {
-            console.log($scope.searchTerms);
-        };
-        
-        //Currently only captures input and prints it to the console
-        $scope.loginClicked = function loginClicked() {
-            console.log($scope.loginInfo);
-            console.log("Logging in.");
-            $cookies.put('adminKey', dataFactory.login($scope.loginInfo));
-            $scope.adminKey = $cookies.get('adminKey');
-            $scope.$apply();
-        };
-        
-        $scope.logoutClicked = function logoutClicked() {
-            console.log("Logging out.");
-            $cookies.put('adminKey', undefined);
-            $scope.adminKey = undefined;
-            $scope.$apply();
-        };
-    
+        //Delete functions
         $scope.deleteJobClicked = function deleteJobClicked(jobNumber) {
             console.log("Deleting job #" + jobNumber);
             dataFactory.deleteJob(jobNumber);
@@ -257,6 +250,43 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             }
             $scope.volunteers.splice(i, 1);
             //$scope.$apply();
+        };
+        
+        $scope.deleteAnnouncementClicked = function deleteAnnouncementClicked(announcementNumber) {
+            console.log("Deleting announcement #" + announcementNumber);
+            dataFactory.deleteVolunteer(announcementNumber);
+            
+            //Delete the volunteer from $scope.announcements
+            var i = 0;
+            for(var len = $scope.announcements.length; i < len; i++) {
+                if($scope.announcements[i].id == announcementNumber) {
+                    break;
+                }
+            }
+            $scope.announcements.splice(i, 1);
+            //$scope.$apply();
+        };
+        
+        //Search function
+        //NOT COMPLETE
+        $scope.searchJobs = function searchJobs() {
+            console.log($scope.searchTerms);
+        };
+        
+        //Login and logout functions
+        $scope.loginClicked = function loginClicked() {
+            console.log($scope.loginInfo);
+            console.log("Logging in.");
+            $cookies.put('adminKey', dataFactory.login($scope.loginInfo));
+            $scope.adminKey = $cookies.get('adminKey');
+            $scope.$apply();
+        };
+        
+        $scope.logoutClicked = function logoutClicked() {
+            console.log("Logging out.");
+            $cookies.put('adminKey', undefined);
+            $scope.adminKey = undefined;
+            $scope.$apply();
         };
     }
 ]);

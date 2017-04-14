@@ -7,6 +7,20 @@ $DB_PASSWORD = "password";
 $DB_NAME = "db";
 */
 
+/*
+api actions:
+    get jobs
+    post job
+    post volunteer
+    get announcements
+admin actions: These require admin login and adminKey authentication
+    delete job
+    get volunteers
+    delete volunteer
+    post announcement
+    delete announcement
+*/
+
 $ADMIN_KEY = NULL;
 
 $searchKeys = array("jobTitle", "companyName", "location");
@@ -56,8 +70,6 @@ function postJob($postJobInfo) {
         }
         
         $query = $query1 . $query2 . ")";
-        
-        //echo $query;
          
         //Insert this job into the DB
         $stmt = $db->prepare($query);
@@ -179,8 +191,6 @@ function postVolunteer($postVolunteerInfo) {
         $stmt->bindParam(':description', $postVolunteerInfo[description]);
         $stmt->execute();
         
-        echo $query;
-        
         $newId = $db->lastInsertId();
         
         return json_encode(array("success" => true));
@@ -243,8 +253,6 @@ function postAnnouncement($postVolunteerInfo) {
         $stmt->bindParam(':description', $postVolunteerInfo[description]);
         $stmt->execute();
         
-        echo $query;
-        
         $newId = $db->lastInsertId();
         
         return json_encode(array("success" => true));
@@ -268,6 +276,12 @@ function login($loginInfo) {
         http_response_code(403);
         return json_encode(array("status" => "failure"));
     }
+}
+
+/* Authenticate adminKey */
+function authenticate($ADMIN_KEY, $adminKey) {
+    //If $adminKey matches $ADMIN_KEY, return true, else return false.
+    return true;
 }
 
 //Get the request
