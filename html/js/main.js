@@ -321,8 +321,14 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             console.log($scope.loginInfo);
             
             dataFactory.login($scope.loginInfo).then(function (adminKey) {
+                //If authentication succeeds, store a cookie with the server's adminKey for 5 hours
+                var now = new Date();
+                var expiration = new Date(now);
+                
+                expiration.setMinutes(now.getMinutes() + 5 * (60));
+                
                 console.log(adminKey);
-                $cookies.put('adminKey', adminKey);
+                $cookies.put('adminKey', adminKey, {'expires' : expiration});
                 $scope.adminKey = adminKey;
             }, function() {
                 $cookies.put('adminKey', undefined); 
