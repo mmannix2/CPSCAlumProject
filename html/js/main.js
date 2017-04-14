@@ -98,6 +98,18 @@ app.factory('dataFactory', ['$http',
                 });
                 return promise;
             },
+            postAnnouncement: function (postAnnouncementInfo) {
+                var promise = $http.post('/api/announcements', postAnnouncementInfo) 
+                .then(function (response) {
+                    console.log(response.data);
+                    return response.data;
+                }, function (response) {
+                    //Error
+                    console.log(response.error);
+                    console.log(response.message);
+                });
+                return promise;
+            },
         };
     }
 ]);
@@ -187,6 +199,13 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             console.log($scope.postVolunteerInfo);
             dataFactory.postVolunteer($scope.postVolunteerInfo);
             $scope.postVolunteerInfo=[];
+        };
+        
+        $scope.postAnnouncementClicked = function postAnnouncementClicked() {
+            console.log("Trying to post an Announcement.");
+            console.log($scope.postAnnouncementInfo);
+            dataFactory.postAnnouncement($scope.postAnnouncementInfo);
+            $scope.postAnnouncementInfo=[];
         };
         
         //Currently only captures input and prints it to the console

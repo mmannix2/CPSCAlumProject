@@ -24,8 +24,8 @@ INSERT INTO announcements (title, description) VALUES ("Test Announcement", "The
 INSERT INTO announcements (title, description) VALUES ("Test Announcement #2", "There will be a second event on Tuesday, April 18th.");
 
 GRANT SELECT, INSERT ON db.jobs TO 'api'@'localhost';
-GRANT SELECT, INSERT ON db.volunteers TO 'api'@'localhost';
-GRANT SELECT, INSERT ON db.announcements TO 'api'@'localhost';
+GRANT SELECT, INSERT ON db.volunteers TO 'api'@'localhost'; /* INSERT only */
+GRANT SELECT, INSERT ON db.announcements TO 'api'@'localhost'; /* SELECT only */
 
 GRANT ALL ON db.jobs TO 'admin'@'localhost';
 GRANT ALL ON db.volunteers TO 'admin'@'localhost';

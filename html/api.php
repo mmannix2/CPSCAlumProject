@@ -231,6 +231,29 @@ function getAnnouncements() {
     }
 }
 
+function postAnnouncement($postVolunteerInfo) {
+    try {
+        //Connect to DB
+        $db = connectToDB('api');
+        $query = "INSERT INTO announcements (title, description) VALUES (:title, :description)";
+        
+        //Insert this job into the DB
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':title', $postVolunteerInfo[title]);
+        $stmt->bindParam(':description', $postVolunteerInfo[description]);
+        $stmt->execute();
+        
+        echo $query;
+        
+        $newId = $db->lastInsertId();
+        
+        return json_encode(array("success" => true));
+    }
+    catch(PDOException $e) {
+        return json_encode(array("error" => "Failed to post announcement.", "message" => $e.message));
+    }
+}
+
 /* Admin Login */
 function login($loginInfo) {
     if( strcasecmp($loginInfo[username], "admin") == 0 && strcmp($loginInfo[password], "admin") == 0 ) {
@@ -294,6 +317,10 @@ switch($_SERVER['REQUEST_METHOD']) {
             //api/volunteers
             case 'volunteers':
                 echo postVolunteer($data);
+            break;
+            //api/announcements
+            case 'announcements':
+                echo postAnnouncement($data);
             break;
             //api/login
             case 'login':
