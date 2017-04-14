@@ -233,17 +233,6 @@ function auth($ADMIN_KEY, $adminKey) {
 $requestURI = $_SERVER['REQUEST_URI'];
 $requestParts = explode('/', rtrim($requestURI, '/'));
 
-/* Test Cases
-//searchJobs
-$searchJobs1 = array("jobTitle" => "programmer", "companyName" => "TechCorp", "location" => "20169");
-
-//postJob
-$postJob1 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345);
-$postJob2 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "email" => "boss@TechCorp.com");
-$postJob3 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "link" => "TechCorp.com/jobs/12345/1");
-$postJob4 = array( "jobTitle" => "Programmer", "companyName" => "TechCorp", "description" => "You will write code in C and C++.", "location" => 12345, "email" => "boss@TechCorp.com", "link" => "TechCorp.com/jobs/12345/1");
-*/
-
 $auth_token = 123456789;
 
 switch($_SERVER['REQUEST_METHOD']) {
@@ -257,11 +246,9 @@ switch($_SERVER['REQUEST_METHOD']) {
             //If looking for volunteers, authenticate first
             case 'volunteers':
                 if(auth($ADMIN_KEY, $auth_token)) {
-                    echo 'Authentication successful.';
                     echo adminGet($requestParts[2]);
                 }
                 else {
-                    echo 'Authentication failed.';
                     http_response_code(403);
                     return json_encode(array("success" => false));
                 }
@@ -284,11 +271,9 @@ switch($_SERVER['REQUEST_METHOD']) {
             case 'announcements':
                 //Authenticate first
                 if(auth($ADMIN_KEY, $auth_token)) {
-                    echo 'Authentication successful.';
-                        echo postAnnouncement($data);
+                    echo postAnnouncement($data);
                 }
                 else {
-                    echo 'Authentication failed.';
                     http_response_code(403);
                     return json_encode(array("success" => false));
                 }
@@ -302,11 +287,9 @@ switch($_SERVER['REQUEST_METHOD']) {
     case 'DELETE':
         //Authenticate first
         if(auth($ADMIN_KEY, $auth_token)) {
-            echo 'Authentication successful.';
             echo deleteRow($requestParts[2], $requestParts[3]);
         }
         else {
-            echo 'Authentication failed.';
             http_response_code(403);
             return json_encode(array("success" => false));
         }
