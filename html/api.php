@@ -232,8 +232,14 @@ function auth($ADMIN_KEY, $adminKey) {
 //Get the request
 $requestURI = $_SERVER['REQUEST_URI'];
 $requestParts = explode('/', rtrim($requestURI, '/'));
+$auth_token = 0;
 
-$auth_token = 123456789;
+//Look through the headers for 'authorization'
+foreach (getallheaders() as $name => $value) {
+    if($name == 'authorization') {
+        $auth_token = $value;
+    }
+}
 
 switch($_SERVER['REQUEST_METHOD']) {
     case 'GET':

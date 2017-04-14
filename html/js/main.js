@@ -1,4 +1,3 @@
-//var app = angular.module('CPSCDatabase', ['ngCookies', 'ngRoute']);
 var app = angular.module('CPSCDatabase', ['ngCookies']);
 
 app.factory('dataFactory', ['$http',
@@ -27,8 +26,12 @@ app.factory('dataFactory', ['$http',
                 });
                 return promise;
             },
-            getVolunteers: function () {
-                var promise = $http.get('/api/volunteers')
+            getVolunteers: function (adminKey) {
+                var promise = $http.get('/api/volunteers', {
+                    headers: {
+                        "Authorization": adminKey
+                    }
+                })
                 .then(function (response) {
                     console.log(response.data);
                     return response.data;
@@ -56,8 +59,8 @@ app.factory('dataFactory', ['$http',
                 .then(function (response) {
                     console.log("Response: " + response.status + " " + response.statusText);
                     console.log("Login succeded.");
-                    console.log(response.data);
-                    return response.data;
+                    console.log(response.data.adminKey);
+                    return response.data.adminKey;
                 }, function(response) {
                     console.log("Response: " + response.status + " " + response.statusText);
                     console.log("Login authentication failed.");
@@ -65,8 +68,12 @@ app.factory('dataFactory', ['$http',
                 });
                 return promise;
             },
-            deleteJob: function (jobNumber) {
-                var promise = $http.delete('/api/jobs/'.concat(jobNumber))
+            deleteJob: function (adminKey, jobNumber) {
+                var promise = $http.delete('/api/jobs/'.concat(jobNumber), {
+                    headers: {
+                        "Authorization": adminKey
+                    }
+                })
                 .then(function (response) {
                     console.log("Response: " + response.status + " " + response.statusText);
                     console.log("Deleted job.");
@@ -76,8 +83,12 @@ app.factory('dataFactory', ['$http',
                 });
                 return promise;
             },
-            deleteVolunteer: function (volunteerNumber) {
-                var promise = $http.delete('/api/volunteers/'.concat(volunteerNumber))
+            deleteVolunteer: function (adminKey, volunteerNumber) {
+                var promise = $http.delete('/api/volunteers/'.concat(volunteerNumber), {
+                    headers: {
+                        "Authorization": adminKey
+                    }
+                })
                 .then(function (response) {
                     console.log("Response: " + response.status + " " + response.statusText);
                     console.log("Deleted volunteer.");
@@ -110,17 +121,27 @@ app.factory('dataFactory', ['$http',
                 });
                 return promise;
             },
+            deleteAnnouncement: function (adminKey, announcementNumber) {
+                var promise = $http.delete('/api/announcements/'.concat(announcementNumber), {
+                    headers: {
+                        "Authorization": adminKey
+                    }
+                })
+                .then(function (response) {
+                    console.log("Response: " + response.status + " " + response.statusText);
+                    console.log("Deleted announcement.");
+                }, function(response){
+                    console.log("Response: " + response.status + " " + response.statusText);
+                    console.log("Failed to delete announcement.");
+                });
+                return promise;
+            },
         };
     }
 ]);
 
 app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
     function ($scope, $cookies, dataFactory) {
-        
-        $scope.adminKey = $cookies.get('adminKey');
-        
-        console.log("adminKey: " + $scope.adminKey);
-        
         $scope.jobs = undefined;
         $scope.volunteers = undefined;
         $scope.announcements = undefined;
@@ -169,23 +190,32 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         
         $scope.postAnnouncementStatus = "Announcement not yet submitted.";
         
-        dataFactory.getJobs().then(function (data) {
-            $scope.jobs = data;
-        }, function (error) {
-            console.log(error);
-        });
+        $scope.loadData = function loadData() {
+            $scope.adminKey = $cookies.get('adminKey');
+            console.log("adminKey: " + $scope.adminKey);
+            
+            dataFactory.getJobs().then(function (data) {
+                $scope.jobs = data;
+            }, function (error) {
+                console.log(error);
+            });
+            
+            dataFactory.getAnnouncements().then(function (data) {
+                $scope.announcements = data;
+            }, function (error) {
+                console.log(error);
+            });
+            
+            if($scope.adminKey != undefined) {
+                dataFactory.getVolunteers($scope.adminKey).then(function (data) {
+                    $scope.volunteers = data;
+                }, function (error) {
+                    console.log(error);
+                });
+            }
+        };
         
-        dataFactory.getAnnouncements().then(function (data) {
-            $scope.announcements = data;
-        }, function (error) {
-            console.log(error);
-        });
-        
-        dataFactory.getVolunteers().then(function (data) {
-            $scope.volunteers = data;
-        }, function (error) {
-            console.log(error);
-        });
+        $scope.loadData();
         
         //Post functions
         $scope.postJobClicked = function postJobClicked() {
@@ -224,47 +254,59 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         //Delete functions
         $scope.deleteJobClicked = function deleteJobClicked(jobNumber) {
             console.log("Deleting job #" + jobNumber);
-            dataFactory.deleteJob(jobNumber);
-            
-            //Delete the job from $scope.jobs
-            var i = 0;
-            for(var len = $scope.jobs.length; i < len; i++) {
-                if($scope.jobs[i].id == jobNumber) {
-                    break;
+            dataFactory.deleteJob($scope.adminKey, jobNumber).then(function (response){
+                //If Authentication succeeds, delete job
+                //Delete the job from $scope.jobs
+                var i = 0;
+                for(var len = $scope.jobs.length; i < len; i++) {
+                    if($scope.jobs[i].id == jobNumber) {
+                        break;
+                    }
                 }
-            }
-            $scope.jobs.splice(i, 1);
-            //$scope.$apply();
+                $scope.jobs.splice(i, 1);
+            }, function (response) {
+                //Else sign the user out
+                alert("Failed to delete job! Please try to login again and try again.");
+                $scope.adminKey = undefined;
+            });
         };
         
         $scope.deleteVolunteerClicked = function deleteVolunteerClicked(volunteerNumber) {
             console.log("Deleting volunteer #" + volunteerNumber);
-            dataFactory.deleteVolunteer(volunteerNumber);
-            
-            //Delete the volunteer from $scope.volunteers
-            var i = 0;
-            for(var len = $scope.volunteers.length; i < len; i++) {
-                if($scope.volunteers[i].id == volunteerNumber) {
-                    break;
+            dataFactory.deleteVolunteer($scope.adminKey, volunteerNumber).then( function (response) {
+                //If Authentication succeeds, delete volunteer
+                //Delete the volunteer from $scope.volunteers
+                var i = 0;
+                for(var len = $scope.volunteers.length; i < len; i++) {
+                    if($scope.volunteers[i].id == volunteerNumber) {
+                        break;
+                    }
                 }
-            }
-            $scope.volunteers.splice(i, 1);
-            //$scope.$apply();
+                $scope.volunteers.splice(i, 1);
+            }, function (response) {
+                //Else sign the user out
+                alert("Failed to delete volunteer! Please try to login again and try again.");
+                $scope.adminKey = undefined;
+            });
         };
         
         $scope.deleteAnnouncementClicked = function deleteAnnouncementClicked(announcementNumber) {
             console.log("Deleting announcement #" + announcementNumber);
-            dataFactory.deleteVolunteer(announcementNumber);
-            
-            //Delete the volunteer from $scope.announcements
-            var i = 0;
-            for(var len = $scope.announcements.length; i < len; i++) {
-                if($scope.announcements[i].id == announcementNumber) {
-                    break;
+            dataFactory.deleteAnnouncement($scope.adminKey, announcementNumber).then( function (response) {
+                //If Authentication succeeds, delete announcement
+                //Delete the volunteer from $scope.announcements
+                var i = 0;
+                for(var len = $scope.announcements.length; i < len; i++) {
+                    if($scope.announcements[i].id == announcementNumber) {
+                        break;
+                    }
                 }
-            }
-            $scope.announcements.splice(i, 1);
-            //$scope.$apply();
+                $scope.announcements.splice(i, 1);
+            }, function (response) {
+                //Else sign the user out
+                alert("Failed to delete announcement! Please try to login again and try again.");
+                $scope.adminKey = undefined;
+            });
         };
         
         //Search function
@@ -275,11 +317,18 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         
         //Login and logout functions
         $scope.loginClicked = function loginClicked() {
-            console.log($scope.loginInfo);
             console.log("Logging in.");
-            $cookies.put('adminKey', dataFactory.login($scope.loginInfo));
-            $scope.adminKey = $cookies.get('adminKey');
-            $scope.$apply();
+            console.log($scope.loginInfo);
+            
+            dataFactory.login($scope.loginInfo).then(function (adminKey) {
+                console.log(adminKey);
+                $cookies.put('adminKey', adminKey);
+                $scope.adminKey = adminKey;
+            }, function() {
+                $cookies.put('adminKey', undefined); 
+                $scope.adminKey = undefined;
+            });
+            $scope.loadData();
         };
         
         $scope.logoutClicked = function logoutClicked() {
