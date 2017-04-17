@@ -1,3 +1,5 @@
+/* createUsers.sql must be run (either by running setup.sh, or invoked individually) before this file is run. If createUsers.sql is not run, errors will occur.*/
+
 DROP DATABASE IF EXISTS db;
 CREATE DATABASE db;
 USE db;
@@ -22,14 +24,6 @@ DROP TABLE IF EXISTS announcements;
 CREATE TABLE announcements (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, title VARCHAR(32) NOT NULL, description VARCHAR(600) NOT NULL);
 INSERT INTO announcements (title, description) VALUES ("Test Announcement", "There will be an event on Tuesday, April 18th.");
 INSERT INTO announcements (title, description) VALUES ("Test Announcement #2", "There will be a second event on Tuesday, April 18th.");
-
-/*
-DROP USER IF EXISTS 'api'@'localhost';
-DROP USER IF EXISTS 'admin'@'localhost';
-
-CREATE USER 'api'@'localhost' IDENTIFIED by 'password';
-CREATE USER 'admin'@'localhost' IDENTIFIED by 'admin';
-*/
 
 GRANT SELECT, INSERT ON db.jobs TO 'api'@'localhost';
 GRANT INSERT ON db.volunteers TO 'api'@'localhost'; /* INSERT only */

@@ -74,7 +74,8 @@ function get($table) {
         
         $query = 'SELECT * FROM ';
         $query .= $table;
-        
+        $query .= ' ORDER BY id DESC';
+         
         //echo $query;
         
         //Get Result
@@ -93,6 +94,7 @@ function adminGet($table) {
         
         $query = 'SELECT * FROM ';
         $query .= $table;
+        $query .= ' ORDER BY id DESC';
         
         //echo $query;
         
