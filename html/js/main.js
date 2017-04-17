@@ -145,6 +145,8 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         $scope.volunteers = undefined;
         $scope.announcements = undefined;
         
+        $scope.jobTypes = ['Full Time', 'Part Time', 'Internship'];
+        
         //Contains the data from the search jobs form
         $scope.searchTerms = {
             "jobTitle": undefined,
