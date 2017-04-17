@@ -135,6 +135,18 @@ app.factory('dataFactory', ['$http',
                 });
                 return promise;
             },
+            searchJobs: function (searchTerm) {
+                var promise = $http.post('/api/search', {"searchTerm":searchTerm})
+                .then( function(response) {
+                    console.log("Search Worked!");
+                    console.log(response.data);
+                    return response.data;
+                }, function(response) {
+                    console.log("Search Failed :(");
+                    return undefined;
+                });
+                return promise;
+            }
         };
     }
 ]);
@@ -148,13 +160,7 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         $scope.jobTypes = ['Full Time', 'Part Time', 'Internship'];
         
         //Contains the data from the search jobs form
-        $scope.searchTerms = {
-            "jobTitle": undefined,
-            "companyName": undefined,
-            "keywords": undefined,
-            "location": undefined,
-            "distance": undefined
-        }; 
+        $scope.searchTerm = '';
         
         //Contains the data from the log in form
         $scope.loginInfo = {
@@ -343,8 +349,16 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         
         //Search function
         //NOT COMPLETE
-        $scope.searchJobs = function searchJobs() {
-            console.log($scope.searchTerms);
+        $scope.searchJobsClicked = function searchJobsClicked() {
+            console.log('Searching for jobs.');
+            console.log($scope.searchTerm);
+            
+            dataFactory.searchJobs($scope.searchTerm).then(function(response){
+                $scope.jobs = response; 
+                console.log($scope.jobs);
+            }, function(response) {
+               $scope.jobs = response; 
+            });
         };
         
         //Login and logout functions

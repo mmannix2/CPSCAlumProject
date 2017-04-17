@@ -165,7 +165,7 @@ function searchJobs($searchTerm) {
         if($searchTerm != NULL && !empty($searchTerm)) {
             $query .= ' WHERE jobTitle LIKE :searchTerm OR companyName LIKE :searchTerm OR location = :location';
             
-            echo $query;
+            //echo $query;
         
             $stmt = $db->prepare($query);
             $stmt->bindValue(':searchTerm', '%'.$searchTerm.'%', PDO::PARAM_STR);
@@ -173,7 +173,7 @@ function searchJobs($searchTerm) {
             
             $stmt->execute();
             
-            return json_encode($stmt->fetchAll());
+            return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         }
     }
     catch(PDOException $e) {

@@ -48,18 +48,10 @@
     <div id="main">
         <div id="search">
             <h2>Search</h2>
-            <form ng-submit="searchJobs()">
-                <label> Job Title
-                    <input type="text" ng-model="searchTerms['jobTitle']"/>
-                </label>
-                <label> Company Name
-                    <input type="text" ng-model="searchTerms['companyName']"/>
-                </label>
+            <form ng-submit="searchJobsClicked()">
+                <input type="text" ng-model="searchTerm"/>
                 <label>
-                    <select ng-model="searchTerms['jobType']" ng-options="x for x in jobTypes">
-                </label>
-                <label>
-                    <input type="submit"/> 
+                    <input type="submit" ng-disabled="!searchTerm"/> 
                 </label>
             </form>
             <h2>Announcements</h2>
