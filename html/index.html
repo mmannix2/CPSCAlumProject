@@ -45,18 +45,22 @@
         </div>
     </div><!-- end #header -->
     <div id="main">
-        <div id="search">
-            <h2>Search</h2>
-            <form ng-submit="searchJobsClicked()">
-                <input type="text" ng-model="searchTerm"/>
-                <label>
-                    <input type="submit" ng-disabled="!searchTerm"/> 
-                </label>
-            </form>
-            <h2>Announcements</h2>
-            <div ng-repeat="announcement in announcements">
-                <h3>{{ announcement.title }}</h3>
-                <p>{{ announcement.description}}</p>
+        <div id="column">
+            <div id="search">
+                <h2>Search</h2>
+                <form ng-submit="searchJobsClicked()">
+                    <input type="text" ng-model="searchTerm"/>
+                    <label>
+                        <input type="submit" ng-disabled="!searchTerm"/> 
+                    </label>
+                </form>
+            </div>
+            <div id="announcements">
+                <h2>Announcements</h2>
+                <div ng-repeat="announcement in announcements">
+                    <h3>{{ announcement.title }}</h3>
+                    <p>{{ announcement.description}}</p>
+                </div>
             </div>
         </div>
         <div id="jobs">
