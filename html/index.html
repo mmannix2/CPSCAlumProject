@@ -70,9 +70,15 @@
                 <h5 ng-show="job.link != null"><a href="{{job.link}}" target="_blank">{{ job.link }}</a></h5>
                 <br>
             </div>
-            <p ng-if="jobs == undefined || jobs.length == 0">
+            <p ng-if="jobs == undefined || jobs.length == 0 && !searched">
                 There are no available jobs at this time. Please check back later.
             </p>
+            <p ng-if="jobs == undefined || jobs.length == 0 && searched">
+                No jobs match your search.
+            </p>
+            <form ng-show="searched" ng-submit="dismissSearchClicked()">
+                <input type="submit" value="Show all Jobs" ng-click="searched = false"/>
+            </form>
         </div>
     </div><!-- end #main -->
     <div id="footer">
