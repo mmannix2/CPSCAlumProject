@@ -33,8 +33,7 @@
         <div id="banner">
             <a id="logo" href="http://umw.edu">
                 <img src="img/UMW-monogram-white.png" />
-            </a>
-            <h1 id="title">CPSC Job Database</h1>
+            </a><h1 id="title" style="text-align:left">CPSC Job Database</h1>
         </div>
         <div id="nav">
             <ul class="topnav" id="top-nav">
@@ -46,23 +45,22 @@
         </div>
     </div><!-- end #header -->
     <div id="main">
-        <div id="search">
-            <h2>Search</h2>
-            <form ng-submit="searchJobs()">
-                <label> Job Title
-                    <input type="text" ng-model="searchTerms['jobTitle']"/>
-                </label>
-                <label> Company Name
-                    <input type="text" ng-model="searchTerms['companyName']"/>
-                </label>
-                <label>
-                    <input type="submit"/> 
-                </label>
-            </form>
-            <h2>Announcements</h2>
-            <div ng-repeat="announcement in announcements">
-                <h3>{{ announcement.title }}</h3>
-                <p>{{ announcement.description}}</p>
+        <div id="column">
+            <div id="search">
+                <h2>Search</h2>
+                <form ng-submit="searchJobsClicked()">
+                    <input type="text" ng-model="searchTerm"/>
+                    <label>
+                        <input type="submit" ng-disabled="!searchTerm"/> 
+                    </label>
+                </form>
+            </div>
+            <div id="announcements">
+                <h2>Announcements</h2>
+                <div ng-repeat="announcement in announcements">
+                    <h3>{{ announcement.title }}</h3>
+                    <p>{{ announcement.description}}</p>
+                </div>
             </div>
         </div>
         <div id="jobs">
@@ -76,9 +74,15 @@
                 <h5 ng-show="job.link != null"><a href="{{job.link}}" target="_blank">{{ job.link }}</a></h5>
                 <br>
             </div>
-            <p ng-if="jobs == undefined || jobs.length == 0">
+            <p ng-if="jobs == undefined || jobs.length == 0 && !searched">
                 There are no available jobs at this time. Please check back later.
             </p>
+            <p ng-if="jobs == undefined || jobs.length == 0 && searched">
+                No jobs match your search.
+            </p>
+            <form ng-show="searched" ng-submit="dismissSearchClicked()">
+                <input type="submit" value="Show all Jobs" ng-click="searched = false"/>
+            </form>
         </div>
     </div><!-- end #main -->
     <div id="footer">

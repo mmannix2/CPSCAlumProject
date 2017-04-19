@@ -135,24 +135,34 @@ app.factory('dataFactory', ['$http',
                 });
                 return promise;
             },
+            searchJobs: function (searchTerm) {
+                var promise = $http.post('/api/search', {"searchTerm":searchTerm})
+                .then( function(response) {
+                    console.log("Search Worked!");
+                    console.log(response.data);
+                    return response.data;
+                }, function(response) {
+                    console.log("Search Failed :(");
+                    return undefined;
+                });
+                return promise;
+            }
         };
     }
 ]);
 
 app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
     function ($scope, $cookies, dataFactory) {
+        $scope.allJobs = undefined;
         $scope.jobs = undefined;
         $scope.volunteers = undefined;
         $scope.announcements = undefined;
+        $scope.searched = false;
+        
+        $scope.jobTypes = ['Full Time', 'Part Time', 'Internship'];
         
         //Contains the data from the search jobs form
-        $scope.searchTerms = {
-            "jobTitle": undefined,
-            "companyName": undefined,
-            "keywords": undefined,
-            "location": undefined,
-            "distance": undefined
-        }; 
+        $scope.searchTerm = '';
         
         //Contains the data from the log in form
         $scope.loginInfo = {
@@ -194,7 +204,8 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             console.log("adminKey: " + $scope.adminKey);
             
             dataFactory.getJobs().then(function (data) {
-                $scope.jobs = data;
+                $scope.allJobs = data;
+                $scope.jobs = JSON.parse(JSON.stringify($scope.allJobs));
             }, function (error) {
                 console.log(error);
             });
@@ -340,9 +351,20 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         };
         
         //Search function
-        //NOT COMPLETE
-        $scope.searchJobs = function searchJobs() {
-            console.log($scope.searchTerms);
+        $scope.searchJobsClicked = function searchJobsClicked() {
+            console.log('Searching for jobs.');
+            console.log($scope.searchTerm);
+            
+            dataFactory.searchJobs($scope.searchTerm).then(function(response){
+                $scope.jobs = response; 
+                console.log($scope.jobs);
+            }, function(response) {
+               $scope.jobs = response; 
+            });
+            $scope.searched = true;
+            console.log($scope.searched);
+            
+            $scope.searchTerm = "";
         };
         
         //Login and logout functions
@@ -372,6 +394,11 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             $cookies.put('adminKey', undefined);
             $scope.adminKey = undefined;
             $scope.$apply();
+        };
+        
+        $scope.dismissSearchClicked = function dismissSearchClicked() {
+            $scope.searched = false;
+            $scope.jobs = $scope.allJobs;
         };
     }
 ]);

@@ -156,14 +156,28 @@ function postJob($postJobInfo) {
     }
 }
 
-function searchJobs($searchTerms) {
+function searchJobs($searchTerm) {
     try {
     //Connect to DB
     $db = connectToDB('api');
-        return json_encode(array("status" => "code incomplete!"));
+        $query = 'SELECT * FROM jobs';
+        
+        if($searchTerm != NULL && !empty($searchTerm)) {
+            $query .= ' WHERE jobTitle LIKE :searchTerm OR companyName LIKE :searchTerm OR description LIKE :searchTerm OR location = :location';
+            
+            //echo $query;
+        
+            $stmt = $db->prepare($query);
+            $stmt->bindValue(':searchTerm', '%'.$searchTerm.'%', PDO::PARAM_STR);
+            $stmt->bindValue(':location', intval($searchTerm), PDO::PARAM_INT);
+            
+            $stmt->execute();
+            
+            return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        }
     }
     catch(PDOException $e) {
-        return json_encode(array("error" => "Failed to search jobs."));
+        return json_encode(array("error" => "Failed to search jobs.", "message" => $e));
     }
 }
 
@@ -285,6 +299,10 @@ switch($_SERVER['REQUEST_METHOD']) {
                     http_response_code(403);
                     return json_encode(array("success" => false));
                 }
+            break;
+            //api/search
+            case 'search':
+                echo searchJobs($data[searchTerm]);
             break;
             //api/login
             case 'login':
