@@ -163,7 +163,7 @@ function searchJobs($searchTerm) {
         $query = 'SELECT * FROM jobs';
         
         if($searchTerm != NULL && !empty($searchTerm)) {
-            $query .= ' WHERE jobTitle LIKE :searchTerm OR companyName LIKE :searchTerm OR location = :location';
+            $query .= ' WHERE jobTitle LIKE :searchTerm OR companyName LIKE :searchTerm OR description LIKE :searchTerm OR location = :location';
             
             //echo $query;
         
