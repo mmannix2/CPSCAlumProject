@@ -164,7 +164,7 @@ function searchJobs($searchTerm) {
         $query = 'SELECT * FROM jobs';
         
         if($searchTerm != NULL && !empty($searchTerm)) {
-            $query .= ' WHERE jobTitle LIKE :searchTerm OR companyName LIKE :searchTerm OR jobType LIKE :searchTerm OR location = :location';
+            $query .= ' WHERE jobTitle LIKE :searchTerm OR companyName LIKE :searchTerm OR jobType LIKE :searchTerm OR description LIKE :searchTerm OR location = :location';
             
             $stmt = $db->prepare($query);
             $stmt->bindValue(':searchTerm', '%'.$searchTerm.'%', PDO::PARAM_STR);
