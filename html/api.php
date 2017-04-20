@@ -163,6 +163,10 @@ function searchJobs($searchTerm) {
     $db = connectToDB('api');
         $query = 'SELECT * FROM jobs';
         
+        if(strcasecmp($searchTerm,'fulltime') == 0) {
+            $searchTerm = 'full time';
+        }
+        
         if($searchTerm != NULL && !empty($searchTerm)) {
             $query .= ' WHERE jobTitle LIKE :searchTerm OR companyName LIKE :searchTerm OR jobType LIKE :searchTerm OR description LIKE :searchTerm OR location = :location';
             
