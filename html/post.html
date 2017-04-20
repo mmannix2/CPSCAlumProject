@@ -47,7 +47,19 @@
     <div id="main">
         <div id=post>
             <h2>Post a Job</h2>
+            <p>
+                Whether you're an alum or a representative from a company 
+                interested in new computer science talent, we'd love to 
+                publicize your job to UMW computer science students.
+            </p>
             <form ng-submit="postJobClicked()">
+                <label>
+                    Full Time
+                    <input type=radio value="Full Time" ng-model="postJobInfo['jobType']"/> 
+                    Internship
+                    <input type=radio value="Internship" ng-model="postJobInfo['jobType']"/> 
+                </label>
+                <br>
                 <label>
                     Job Title:
                     <input type="text" name="jobTitle" ng-model="postJobInfo['jobTitle']"/>
@@ -60,22 +72,38 @@
                 <br>
                 <label>
                     Zipcode:
-                    <input type="text" name="location" ng-model="postJobInfo['location']"/>
+                    <input type="text" name="location" maxlength=5 ng-model="postJobInfo['location']"/>
                 </label>
                 <br>
                 <label>
-                    Email:
-                    <input type="text" name="email" ng-model="postJobInfo['email']"/>
+                    How should students apply?
                 </label>
                 <br>
                 <label>
-                    External Link:
-                    <input type="text" name="link" ng-model="postJobInfo['link']"/>
+                    Email
+                    <input type=radio value="0" ng-model="postJobInfo['contactType']" /> 
+                    External Link
+                    <input type=radio value="1" ng-model="postJobInfo['contactType']" /> 
                 </label>
                 <br>
+                <ng-show ng-show="postJobInfo['contactType'] == 0">
+                    <label>
+                        Email:
+                        <input type="text" name="email" ng-model="postJobInfo['email']"/>
+                    </label>
+                    <br>
+                </ng-show>
+                <ng-show ng-show="postJobInfo['contactType'] == 1">
+                    <label>
+                        External Link:
+                        <input type="text" name="link" ng-model="postJobInfo['link']"/>
+                    </label>
+                    <br>
+                </ng-show>
                 <label>
-                    Description
-                    <textarea name="description" maxlength="600" ng-model="postJobInfo['description']"></textarea>
+                    Please provide a brief description of the job and or skills 
+                    that you're seeking. (Limit 300 characters)
+                    <textarea name="description" maxlength="300" ng-model="postJobInfo['description']"></textarea>
                 </label>
                 <br>
                 <label>

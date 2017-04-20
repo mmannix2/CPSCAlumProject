@@ -67,6 +67,7 @@
             <h2>Jobs</h2>
             <div ng-repeat="job in jobs">
                 <h4>{{ job.jobTitle }} at {{ job.companyName }}</h4>
+                <h5>{{ job.jobType }}</h5>
                 <h5>Zip Code: {{ job.location }}</h5>
                 <p>{{ job.description }}</p>
                 <h5>Apply To:</h5>

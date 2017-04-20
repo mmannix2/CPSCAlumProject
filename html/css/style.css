@@ -151,6 +151,10 @@ input[type="submit"] {
     width: 100%;
 }
 
+#post form input[type="radio"] {
+    width: auto;
+}
+
 #post form textarea {
     min-height: 10em;
 }
@@ -184,6 +188,9 @@ input[type="submit"] {
 
 /* admin.html */
 .deleteButton {
+#post form * {
+    width: 100%;
+}
     color: #002B5A;
 }
 

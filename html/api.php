@@ -113,8 +113,8 @@ function postJob($postJobInfo) {
         //Connect to DB
         $db = connectToDB('api');
         
-        $query1 = "INSERT INTO jobs (jobTitle, companyName, description, location";
-        $query2 = ") VALUES (:jobTitle, :companyName, :description, :location";
+        $query1 = "INSERT INTO jobs (jobTitle, companyName, description, location, jobType";
+        $query2 = ") VALUES (:jobTitle, :companyName, :description, :location, :jobType";
         
         if(!empty($postJobInfo[email])) {
             $query1 .= ", email";
@@ -136,6 +136,7 @@ function postJob($postJobInfo) {
         $stmt->bindParam(':companyName', $postJobInfo[companyName]);
         $stmt->bindParam(':description', $postJobInfo[description]);
         $stmt->bindParam(':location', $postJobInfo[location]);
+        $stmt->bindParam(':jobType', $postJobInfo[jobType]);
         
         if(!empty($postJobInfo[email])) {
             $stmt->bindParam(':email', $postJobInfo[email]);
@@ -163,10 +164,8 @@ function searchJobs($searchTerm) {
         $query = 'SELECT * FROM jobs';
         
         if($searchTerm != NULL && !empty($searchTerm)) {
-            $query .= ' WHERE jobTitle LIKE :searchTerm OR companyName LIKE :searchTerm OR location = :location';
+            $query .= ' WHERE jobTitle LIKE :searchTerm OR companyName LIKE :searchTerm OR jobType LIKE :searchTerm OR location = :location';
             
-            //echo $query;
-        
             $stmt = $db->prepare($query);
             $stmt->bindValue(':searchTerm', '%'.$searchTerm.'%', PDO::PARAM_STR);
             $stmt->bindValue(':location', intval($searchTerm), PDO::PARAM_INT);

@@ -159,8 +159,6 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         $scope.announcements = undefined;
         $scope.searched = false;
         
-        $scope.jobTypes = ['Full Time', 'Part Time', 'Internship'];
-        
         //Contains the data from the search jobs form
         $scope.searchTerm = '';
         
@@ -176,6 +174,9 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             "companyName": undefined,
             "description": undefined,
             "location": undefined,
+            "jobType": undefined,
+            "contactType": undefined,
+            "contact": undefined,
             "email": undefined,
             "link": undefined
         };
