@@ -398,15 +398,14 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
                 var expiration = new Date(now);
                 
                 expiration.setMinutes(now.getMinutes() + 5 * (60));
-                
-                console.log(adminKey);
-                $cookies.put('adminKey', adminKey, {'expires' : expiration});
                 $scope.adminKey = adminKey;
+                $cookies.put('adminKey', adminKey, {'expires' : expiration});
+                console.log(adminKey);
+                $scope.loadData();
             }, function() {
                 $cookies.put('adminKey', undefined); 
                 $scope.adminKey = undefined;
             });
-            $scope.loadData();
         };
         
         $scope.logoutClicked = function logoutClicked() {
