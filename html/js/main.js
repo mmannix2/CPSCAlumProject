@@ -108,8 +108,12 @@ app.factory('dataFactory', ['$http',
                 });
                 return promise;
             },
-            postAnnouncement: function (postAnnouncementInfo) {
-                var promise = $http.post('/api/announcements', postAnnouncementInfo) 
+            postAnnouncement: function (adminKey, postAnnouncementInfo) {
+                var promise = $http.post('/api/announcements', postAnnouncementInfo, {
+                    headers: {
+                        "Authorization": adminKey
+                    }
+                }) 
                 .then(function (response) {
                     console.log(response.data);
                     return response.data;
@@ -159,6 +163,8 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         $scope.announcements = undefined;
         $scope.searched = false;
         
+        $scope.contactType = undefined;
+        
         //Contains the data from the search jobs form
         $scope.searchTerm = '';
         
@@ -175,8 +181,6 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
             "description": undefined,
             "location": undefined,
             "jobType": undefined,
-            "contactType": undefined,
-            "contact": undefined,
             "email": undefined,
             "link": undefined
         };
@@ -232,6 +236,21 @@ app.controller('controller', ['$scope', '$cookies', 'dataFactory' ,
         $scope.postJobClicked = function postJobClicked() {
             console.log("Trying to post a job.");
             console.log($scope.postJobInfo);
+            console.log($scope.contactType);
+            //Verify email
+            /*
+            //We should check to make sure the email is valid
+            if($scope.contactType == 0) {
+                console.log('verifying email');
+            }
+            */
+            //link format
+            /*
+            //We should check to make sure the link is valid
+            if($scope.contactType == 1) {
+                console.log('verifying link');
+            }
+            */
             //Add this job to the DB
             dataFactory.postJob($scope.postJobInfo)
             .then(function(response){

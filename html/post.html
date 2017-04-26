@@ -81,19 +81,19 @@
                 <br>
                 <label>
                     Email
-                    <input type=radio value="0" ng-model="postJobInfo['contactType']" /> 
+                    <input type=radio value="0" ng-model="contactType" /> 
                     External Link
-                    <input type=radio value="1" ng-model="postJobInfo['contactType']" /> 
+                    <input type=radio value="1" ng-model="contactType" /> 
                 </label>
                 <br>
-                <ng-show ng-show="postJobInfo['contactType'] == 0">
+                <ng-show ng-show="contactType == 0">
                     <label>
                         Email:
                         <input type="text" name="email" ng-model="postJobInfo['email']"/>
                     </label>
                     <br>
                 </ng-show>
-                <ng-show ng-show="postJobInfo['contactType'] == 1">
+                <ng-show ng-show="contactType == 1">
                     <label>
                         External Link:
                         <input type="text" name="link" ng-model="postJobInfo['link']"/>
@@ -107,7 +107,7 @@
                 </label>
                 <br>
                 <label>
-                    <input type="submit" ng-disabled="(!postJobInfo['jobTitle'] || !postJobInfo['companyName'] || !postJobInfo['description'] || !postJobInfo['location']) || (!postJobInfo['email'] && !postJobInfo['link'])"/>
+                    <input type="submit" ng-disabled="(!postJobInfo['jobType'] || !postJobInfo['jobTitle'] || !postJobInfo['companyName'] || !postJobInfo['description'] || !postJobInfo['location']) || (!postJobInfo['email'] && !postJobInfo['link'])"/>
                 </label>
             </form> 
         </div>
